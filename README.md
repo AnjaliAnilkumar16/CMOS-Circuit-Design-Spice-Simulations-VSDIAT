@@ -31,7 +31,9 @@
 <details>
 <summary><b>L1 - Why do we need SPICE Simulations?</b></summary>
 
-Your notes here.
+SPICE simulations are used to analyze and verify circuit behavior before fabrication by applying input signals and observing outputs. They help designers evaluate parameters like voltage, current, delay, power, and noise margins, reducing design errors and improving circuit reliability.
+
+SPICE simulations help evaluate circuit performance across a large number of operating points and conditions. They provide accurate values for parameters such as voltage, current, delay, and power, which would be difficult and time-consuming to calculate manually.
 
 </details>
 
