@@ -710,7 +710,7 @@ To study this, we perform SPICE simulations using a lower technology node transi
   <img src="Day2/D2SK1_L1_1.png" width="800">
 </p>
 
-we create an NMOS transistor in the SPICE netlist with a Width-to-Length ratio (W/L) of 2.5. The simulation sweeps the drain voltage while applying different gate voltages.
+we create an NMOS transistor in the SPICE netlist with a Width-to-Length ratio (W/L) of 2.5. The simulation sweeps the drain voltage while applying different gate voltages. Here the meaning of **.dc Vdd 0 1.8 0.1 Vin 0 1.8 0.2** means Vdd will be swept from 0 to 1.8 for each value of Vin from 0 to 1.8. That means first Vin=0, then Vdd will be 0,0.1,0.2.....,1.8. 
 
 The SPICE simulator then calculates the drain current for each operating condition and generates the characteristic curves automatically. This allows us to study transistor behavior without performing lengthy manual calculations.
 
