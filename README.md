@@ -694,6 +694,58 @@ The reason is SPICE's current sign convention. SPICE assumes that current enteri
 
 </details>
 
+## 2️⃣ Velocity Saturation & CMOS Inverter Basics
+
+### NgspiceSky130-Day2-Velocity saturation and basics of CMOS inverter VTC
+
+<details>
+<summary><b>L1 - L1 SPICE simulation for lower nodes?</b></summary>
+
+After understanding how an NMOS behaves in the linear and saturation regions, the next step is to see how device dimensions affect its electrical characteristics.
+
+To study this, we perform SPICE simulations using a lower technology node transistor. The objective is to observe how the drain current characteristics change when the transistor dimensions are modified.
+
+
+<p align="center">
+  <img src="Day2/D2SK1_L1_1.png" width="800">
+</p>
+
+we create an NMOS transistor in the SPICE netlist with a Width-to-Length ratio (W/L) of 2.5. The simulation sweeps the drain voltage while applying different gate voltages.
+
+The SPICE simulator then calculates the drain current for each operating condition and generates the characteristic curves automatically. This allows us to study transistor behavior without performing lengthy manual calculations.
+
+<p align="center">
+  <img src="Day2/D2SK1_L1_2.png" width="800">
+</p>
+
+The output graph in the figure, shows the drain current versus drain voltage characteristics for different gate voltages.
+
+At small drain voltages, the curves rise almost linearly because the transistor operates in the resistive region.
+
+As the drain voltage increases further, the curves gradually flatten, indicating that the transistor has entered saturation. In this region, increasing VDS does not significantly increase the drain current.
+
+<p align="center">
+  <img src="Day2/D2SK1_L1_3.png" width="800">
+</p>
+
+
+<p align="center">
+  <img src="Day2/D2SK1_L1_4.png" width="800">
+</p>
+
+
+
+In the previous case, the characteristics were obtained for a long-channel MOSFET. The region left of **VDS = VGS − VT** is the **Linear Region**, the region right of it is the **Saturation Region**, and the area below threshold is the **Cut-off Region**.
+
+Now, both **W** and **L** are scaled down while keeping the **W/L ratio constant**. From the ideal drain current equation, the current should remain unchanged since it depends on **W/L**. However, practical SPICE simulations show a different behavior due to short-channel effects present in scaled technologies.
+
+The SPICE deck below demonstrates this comparison, where only **W** and **L** are changed while all other parameters remain the same.
+</details>
+
+<details>
+<summary><b>L2 - Drain current vs gate voltage for long and short channel device?</b></summary>
+
+
 
 
 
