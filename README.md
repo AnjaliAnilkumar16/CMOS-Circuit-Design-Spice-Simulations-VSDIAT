@@ -497,28 +497,200 @@ Once pinch-off occurs, the MOSFET enters the saturation region. The channel volt
 <details>
 <summary><b>L1 - Basic SPICE Setup</b></summary>
 
-Your notes here.
+<p align="center">
+  <img src="DISK3_L1_1.png" width="800">
+</p>
 
+So far, we have understood how an NMOS transistor behaves physically. We studied channel formation, linear region operation, saturation, pinch-off, and channel length modulation.
+
+Now imagine that we want to predict the behavior of a transistor before manufacturing it. Calculating every voltage and current manually would be extremely difficult, especially when a modern chip contains millions of transistors.
+
+This is where SPICE comes into the picture.
+
+SPICE (Simulation Program with Integrated Circuit Emphasis) acts like a virtual laboratory. Instead of fabricating the transistor and then testing it, we can simulate its behavior on a computer.
+
+SPICE takes two important inputs:
+
+- The circuit description (SPICE Netlist)
+- Technology parameters provided by the foundry
+
+Using these inputs, SPICE solves the transistor equations and predicts the electrical behavior of the circuit.
+
+Think of SPICE as a calculator that already knows all the complicated transistor physics and performs the calculations automatically.
+
+**What are Nodes in SPICE?**
+
+<p align="center">
+  <img src="DISK3_L1_2.png" width="800">
+</p>
+
+Before SPICE can analyze a circuit, it must know how every component is connected.
+
+For this purpose, every connection point is assigned a name called a Node.
+
+For example:
+
+- VDD
+- VSS
+- IN
+- OUT
+- n1
+
+Each node represents a unique electrical connection point.
+
+When SPICE runs a simulation, it calculates the voltage at every node and determines how current flows between them.
+
+Without nodes, SPICE would not know how the circuit is interconnected.
 </details>
 
 <details>
-<summary><b>L2 - Circuit Description in SPICE Syntax</b></summary>
+<summary><b>L2 - Circuit Description in SPICE Syntax</b></summary> 
+  
+<p align="center">
+  <img src="DISK3_L2_1.png" width="800">
+</p>
 
-Your notes here.
+Once the nodes are defined, we must tell SPICE what components are present in the circuit.
+
+Unlike schematic diagrams, SPICE uses text-based commands.
+
+As shown in the figure, the transistor, resistor, and voltage source are described using simple statements.
+
+For example:M1 vdd n1 0 0 nmos W=1.8u L=1.2u
+
+This tells SPICE:
+
+- M1 is an NMOS transistor
+- Drain connected to vdd
+- Gate connected to n1
+- Source connected to ground
+- Bulk connected to ground
+- Width = 1.8 μm
+- Length = 1.2 μm
+
+
+Similarly, **R1 in n1 55** defines a resistor and **Vdd vdd 0 2.5** defines a 2.5 V supply source.
+
+Together, these statements form the SPICE Netlist, which is simply a textual description of the circuit.
 
 </details>
 
 <details>
 <summary><b>L3 - Technology Parameters</b></summary>
 
-Your notes here.
+<p align="center">
+  <img src="DISK3_L3_1.png" width="800">
+</p>
+
+Describing the circuit connections alone is not enough.
+
+SPICE also needs to know how the transistor behaves physically.
+
+For example:
+
+- What is the threshold voltage?
+- What is the electron mobility?
+- What is the oxide thickness?
+- What is the body effect coefficient?
+
+These values are technology-dependent and are provided by the semiconductor foundry.
+
+You can think of this model as the transistor's DNA. It completely defines how the transistor behaves electrically.
+
+<p align="center">
+  <img src="DISK3_L3_2.png" width="800">
+</p>
+
+Instead of writing hundreds of model parameters inside every circuit file, all these parameters are grouped into a separate model file.
+
+As shown in the figure, the technology file may contain:
+
+- NMOS model parameters
+- PMOS model parameters
+- Threshold voltage values
+- Body effect coefficients
+- Oxide parameters
+- Mobility parameters
+
+xxxx_025um_model.mod
+
+Whenever SPICE runs, it reads this file and uses these parameters to accurately model transistor behavior.
+
+These are packaged into a model file such as:
+
+<p align="center">
+  <img src="DISK3_L3_3.png" width="800">
+</p>
+
+Once the circuit netlist and technology file are ready, we connect them together. As shown in the above figure, the simulation file includes:
+
+- Circuit description
+- Technology model file
+- Simulation commands
+
+At this point SPICE has all the information required to start the simulation.
 
 </details>
 
 <details>
 <summary><b>L4 - First SPICE Simulation</b></summary>
 
-Your notes here.
+<p align="center">
+  <img src="DISK3_L4_1.png" width="800">
+</p>
+
+Now the simulation is executed.
+
+SPICE begins by reading the netlist and technology file.
+
+It then solves the transistor equations internally and calculates:
+
+- Node voltages
+- Branch currents
+- Device operating points
+
+As shown in teh figure, the simulator successfully processes the circuit and displays the simulation information in the terminal.
+
+This confirms that the circuit description and model files have been read correctly.
+
+
+<p align="center">
+  <img src="DISK3_L4_2.png" width="800">
+</p>
+
+
+After simulation, SPICE generates several output vectors.  
+
+
+- Node voltages
+- Drain current
+- Branch currents
+- Operating point values
+
+These are the numerical results produced by the simulator.
+
+<p align="center">
+  <img src="DISK3_L4_3.png" width="800">
+</p>
+
+Finally, SPICE plots the ID-VDS characteristics of the NMOS transistor.
+
+The graph shows drain current versus drain voltage for multiple gate voltages.
+
+Instead of manually calculating drain current for every VDS value, SPICE automatically sweeps the voltage and generates the complete curve.
+
+This is one of the biggest advantages of simulation.
+
+**Why is the Plot Command Written as -vdd#branch?**
+
+<p align="center">
+  <img src="DISK3_L4_3.png" width="800">
+</p>
+
+
+A common question is why the current is plotted as: -vdd#branch instead of vdd#branch 
+
+The reason is SPICE's current sign convention. SPICE assumes that current entering the positive terminal of a voltage source is positive. However, in our NMOS circuit, current actually leaves the positive terminal of VDD and flows toward ground. Therefore, SPICE reports the current as negative. To display the drain current in the actual direction of flow, we add a negative sign:**-vdd#branch**
 
 </details>
 
