@@ -14,7 +14,7 @@
 5. [Power Supply & Process Variation Evaluation](#power-supply--pr0cess-variation-evaluation)
 
 ## 🛠️ Tools Used
-## 🛠️ Tools Used
+
 
 ![Spice Simulator: LTspice](https://img.shields.io/badge/Spice%20Analysis-LTspice-blue?style=for-the-badge)<br>
 ![PDK: SKY130](https://img.shields.io/badge/PDK-SKY130%20open%20source-blue?style=for-the-badge)<br>
@@ -928,7 +928,47 @@ Eventhough the starting Id has a quadratic dependency on Vgs. But later it becam
 
 To get the threshold voltage, take the slope over the Vgs vs Id graph. It comes to apprx 0.77 Volts.
 
+### NgspiceSky130_D2SK2 - CMOS voltage transfer characteristics (VTC)
 
+<details>
+<summary><b>L2 - MOSFET as a switch</b></summary>
+
+<img width="940" height="564" alt="image" src="https://github.com/user-attachments/assets/82bf8bde-0745-4970-a115-4ab2a883aa22" />
+
+Until now, MOSFETs were studied using current equations and operating regions. However, in digital circuits, MOSFETs are primarily used as switches. Understanding this switching behavior is the foundation of CMOS logic design.
+
+Consider an NMOS transistor. When the gate voltage is below the threshold voltage, no inversion channel exists between source and drain. Since there is no conducting path, the transistor behaves like an open switch and no current flows through it.
+
+When the gate voltage exceeds the threshold voltage, an inversion channel is formed. Electrons can now travel from source to drain, creating a conducting path. In this condition, the transistor behaves like a closed switch.
+
+Therefore, from a digital perspective, a MOSFET can be viewed as a voltage-controlled switch:
+
+- Gate Voltage < Threshold Voltage → Switch OFF
+- Gate Voltage > Threshold Voltage → Switch ON
+
+This simple switching property is what makes MOSFETs suitable for implementing digital logic circuits.
+
+<img width="795" height="553" alt="image" src="https://github.com/user-attachments/assets/5c37267f-2773-42a1-8f0f-9c0bc810dd54" />
+
+
+In reality, an ON transistor is not a perfect short circuit and an OFF transistor is not a perfect open circuit. However, for understanding digital logic, this approximation is sufficiently accurate.
+
+The ON transistor can be represented as a small resistance, while the OFF transistor can be represented as a very large resistance.
+
+The MOSFET behaves as a controllable switch whose state depends on the gate voltage. This simple switching behavior forms the basis of CMOS logic circuits and enables the implementation of digital systems.
+
+<img width="940" height="527" alt="image" src="https://github.com/user-attachments/assets/a89a2c90-2533-481b-a758-091fea8f2fb4" />
+
+When the PMOS is OFF, it can be modeled as an open switch because there is no conducting path between VDD and the output node.
+
+  When the NMOS is ON, it can be modeled as a resistor because it provides a conducting path between the output node and ground.
+
+  Since the PMOS is open and the NMOS provides a path to ground, the output node is connected to ground through the NMOS resistance.
+
+  Therefore, the voltage drop appears across the NMOS resistor, and the output voltage is pulled close to 0 V. In an ideal MOSFET, the resistance is zero and the output is exactly 0 V. In a practical MOSFET, a small voltage may exist due to the finite ON resistance of the NMOS.
+ </details>
+<details>
+<summary>L2 - Introduction to standard MOS voltage current parameters<b></b></summary>
 
 
 
