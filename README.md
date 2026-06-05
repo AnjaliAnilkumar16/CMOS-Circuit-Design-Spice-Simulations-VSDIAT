@@ -40,24 +40,20 @@ SPICE simulations help evaluate circuit performance across a large number of ope
 <details>
 <summary><b>L2-Introduction to basic element in circuit design-NMOS</b></summary>
 
+<img width="602" height="236" alt="L2_1" src="https://github.com/user-attachments/assets/13aab8c5-bbcb-43b2-b4bb-53682a0ad3d3" />
 
-
-<p align="center">
-  <img src="L2_1.png" width="800">
-</p>
 
 At first we will keep the Vgs=0, means source and drain terminal both are grounded. Body is also grounded. P-substrate and n+ act as PN junction diode, so there is a high resistance. There is no channel formation. For nmos we apply a positive Gate to source voltage. When the gate voltage is zero, no inversion channel exists between the source and drain. Both source-substrate and drain-substrate junctions remain unbiased, resulting in very high resistance between source and drain.
 
-<p align="center">
-  <img src="L2_2.png" width="800">
-</p>
+
+<img width="602" height="233" alt="L2_2" src="https://github.com/user-attachments/assets/4b72ed8c-c3c5-43e2-b7d7-95991ca190e1" />
+
 
 As the gate voltage (VGS) increases, electrons begin to accumulate beneath the gate oxide. At a particular gate voltage, the semiconductor surface under the gate inverts from p-type to n-type, resulting in the formation of an inversion channel between the source and drain. This minimum gate voltage required to create the conducting channel is called the threshold voltage (VTH). The formation of this inversion layer is known as strong inversion.
 
-<p align="center">
-  <img src="L2_3.png" width="800">
-</p>
 
+
+<img width="602" height="296" alt="L2_3" src="https://github.com/user-attachments/assets/91a449be-a04f-4d2f-a81b-afef35212bca" />
 
 Further increase in gate voltage beyond the threshold voltage strengthens the inversion layer and forms a continuous n-channel between source and drain. The conductivity of this channel is controlled by the applied gate voltage.
 
@@ -65,9 +61,11 @@ Further increase in gate voltage beyond the threshold voltage strengthens the in
 
 <details>
 <summary><b>L3 - Strong inversion and threshold voltage</b></summary>
-  <p align="center">
-  <img src="L2_3.png" width="800">
-</p>
+ 
+
+<img width="602" height="296" alt="L2_3" src="https://github.com/user-attachments/assets/c5eb9de0-7cf6-4a15-ae7a-f1da2a3641fc" />
+
+
   
 Once the inversion channel is formed, any further increase in the gate voltage (VGS) attracts more electrons towards the gate-substrate interface, strengthening the n-type inversion layer. The region beneath the gate, which was originally part of the p-type substrate, effectively behaves as an n-type channel, providing a continuous conductive path between the source and drain. However, the formation of the channel alone does not result in current flow. A drain-to-source voltage (VDS) must be applied to create an electric field that drives electrons from the source towards the drain. Thus, VGS forms the channel, while VDS enables current conduction through the channel.
 
@@ -76,9 +74,9 @@ Once the inversion channel is formed, any further increase in the gate voltage (
 <details>
 <summary><b>L4 - Threshold voltage with positive substrate potential</b></summary>
 
-<p align="center">
-  <img src="L4_1.png" width="800">
-</p>
+
+<img width="602" height="252" alt="L4_1" src="https://github.com/user-attachments/assets/2ad9f636-ffdf-43db-b13e-7d066d79495a" />
+
 
 When VSB = 0, the inversion channel forms uniformly along the gate region once the gate voltage reaches the threshold voltage (VTO). As a result, channel formation occurs relatively earlier.
 
@@ -86,9 +84,10 @@ When a positive VSB is applied, the source-to-substrate junction becomes more re
 
 This phenomenon is known as the Body Effect, where the threshold voltage of a MOSFET increases with increasing source-to-body voltage (VSB).
 
-<p align="center">
-  <img src="L4_2.png" width="800">
-</p>
+
+
+<img width="602" height="313" alt="L4_2" src="https://github.com/user-attachments/assets/afacec99-81b7-49b8-a22b-e7c5acc2ba46" />
+
 
 The threshold voltage is no longer constant and becomes a function of VSB. The body effect equation quantifies the increase in threshold voltage caused by the applied source-to-body bias, with parameters such as body-effect coefficient (γ) and Fermi potential (ϕF) determined by the manufacturing process.
 
@@ -111,9 +110,10 @@ Now let us apply a very small drain-to-source voltage (VDS), for example 0.05 V,
 At the source end of the channel, the gate-to-channel voltage is approximately:
 VGS - 0, because the channel voltage is nearly zero at the source.
 
-<p align="center">
-  <img src="DISK2_L1_1.png" width="800">
-</p>
+
+
+<img width="602" height="286" alt="DISK2_L1_1" src="https://github.com/user-attachments/assets/cdbd93c0-b345-4c37-9497-dc026843ae79" />
+
 
 
 
@@ -156,18 +156,19 @@ Therefore, VGS - V(x) = VGS At the drain end: V(x) = VDS
 Therefore, VGS - V(x) = VGS - VDS
 This shows that the gate-to-channel voltage is not constant throughout the channel. It gradually decreases from the source side to the drain side, creating a non-uniform charge distribution in the inversion layer.
 
-<p align="center">
-  <img src="DISK2_L2_1.png" width="800">
-</p>
+
+
+<img width="602" height="286" alt="DISK2_L2_1" src="https://github.com/user-attachments/assets/7aae110f-f600-4069-989c-07e9d9b59c57" />
+
 
 **Observation:**
 The effective gate-to-channel voltage varies from VGS at the source to VGS − VDS at the drain. As a result, the inversion charge density is slightly higher near the source and lower near the drain.
 
 To quantify the amount of charge available for conduction, we analyze the inversion charge density at any point x along the channel. The inversion charge depends on the gate oxide capacitance (Cox) and the local gate-to-channel voltage.
 
-<p align="center">
-  <img src="DISK2_L2_2.png" width="800">
-</p>
+
+<img width="602" height="288" alt="DISK2_L2_2" src="https://github.com/user-attachments/assets/6a818620-969b-4e72-8650-9712d36d33b8" />
+
 
 **Observation:**
 A thinner oxide results in a larger oxide capacitance, allowing the gate to exert stronger control over the channel charge.
@@ -185,12 +186,11 @@ Drift current arises due to the electric field created by the drain-to-source vo
 
 This potential gradient produces an electric field:
 Electric Field = dV/dx
-which drives electrons from the source towards the drain.
+which drives electrons from the source towards the drain
 
 
-<p align="center">
-  <img src="DISK2_L2_3.png" width="800">
-</p>
+<img width="602" height="335" alt="DISK2_L2_3" src="https://github.com/user-attachments/assets/de4fd9e6-5862-444d-9412-3d3b46a03f16" />
+
 
 **Observation:**
 The drift current exists because of the potential difference between source and drain. Without VDS, the channel would exist but no net electron flow would occur.
@@ -229,9 +229,7 @@ In the previous section, we learned that a small drain-to-source voltage (VDS) c
 
 When VGS > VTH, an inversion channel is already formed between the source and drain. The amount of charge present in this channel is not uniform and depends on the local gate-to-channel voltage at every point along the channel.
 
-<p align="center">
-  <img src="DISK2_L3_1.jpeg" width="800">
-</p>
+<img width="1280" height="1042" alt="DISK2_L3_1" src="https://github.com/user-attachments/assets/82bcc334-4efd-4963-be73-bb7030e01675" />
 
 **Observation:**
 
@@ -253,9 +251,11 @@ Since the electric field is created by the drain voltage, the drain current beco
 
 By substituting the charge and velocity expressions and integrating across the entire channel length (L), we obtain the drain current equation:
 
-<p align="center">
-  <img src="DISK2_L3_2.jpeg" width="800">
-</p>
+
+
+<img width="892" height="1280" alt="DISK2_L3_2" src="https://github.com/user-attachments/assets/ba12e56d-183c-4d2d-880a-17d13be9fdf7" />
+
+
 </details>
 
 <details>
@@ -312,9 +312,9 @@ For a channel to exist, this value must always be greater than the threshold vol
 As long as this condition is satisfied throughout the entire channel, electrons can travel continuously from source to drain.
 
 
-<p align="center">
-  <img src="DISK2_L5_1.png" width="800">
-</p>
+
+<img width="602" height="306" alt="DISK2_L5_1" src="https://github.com/user-attachments/assets/7566bd29-9703-4e10-bb8d-c15c24e36317" />
+
 
 At first, when VDS = 0.05 V, VGS - VDS = 1 - 0.05 = 0.95 V
 
@@ -352,9 +352,10 @@ Eventually we reach: VGS - VDS = VTH Substituting values:
 1 - VDS = 0.45 which gives: VDS = 0.55 V
 
 
-<p align="center">
-  <img src="DISK2_L5_2.png" width="800">
-</p>
+
+
+<img width="602" height="294" alt="DISK2_L5_2" src="https://github.com/user-attachments/assets/6c3c5d2e-3dfb-4bb9-aaaf-550dc70393d2" />
+
 
 
 At this exact point, VGS - VDS = VTH 
@@ -370,9 +371,7 @@ For example:
 VDS = 0.65 V. Then: VGS - VDS = 0.35 V which is less than VTH. Now there is no inversion layer near the drain side. 
 
 
-<p align="center">
-  <img src="DISK2_L5_3.png" width="800">
-</p>
+<img width="602" height="288" alt="DISK2_L5_3" src="https://github.com/user-attachments/assets/c235836c-76b6-4cca-9512-4ab432ac6b5e" />
 
 
 The channel is no longer continuous. A depletion region appears near the drain. This region is called the Pinch-Off Region. The condition for pinch-off is: VGS - VDS ≤ VTH
@@ -444,15 +443,14 @@ At this condition, the inversion layer at the drain end disappears and the trans
 
 This marks the beginning of the saturation region.
 
-<p align="center">
-  <img src="DISK2_L6_1.png" width="800">
-</p>
 
-At pinch-off, the voltage across the conductive channel becomes fixed and equal to: VGS - VTH. Any additional drain voltage does not appear across the channel. Instead, it appears across the depletion region near the drain. 
+<img width="602" height="316" alt="DISK2_L6_1" src="https://github.com/user-attachments/assets/76e611f4-60df-47f8-93da-abd9a9d7d9e7" />
 
-<p align="center">
-  <img src="DISK2_L6_2.png" width="800">
-</p>
+
+At pinch-off, the voltage across the conductive channel becomes fixed and equal to: VGS - VTH. Any additional drain voltage does not appear across the channel. Instead, it appears across the depletion region near the drain.
+
+
+<img width="602" height="309" alt="DISK2_L6_2" src="https://github.com/user-attachments/assets/ba5331ba-b003-4177-9f34-ecda6f297a07" />
 
 The drain current is no longer a function of VDS.
 
@@ -480,9 +478,8 @@ This is why the current appears to become constant in the saturation region.
 - Channel resistance decreases.
 - Drain current increases slightly.
 
-<p align="center">
-  <img src="DISK2_L6_3.png" width="800">
-</p>
+<img width="602" height="318" alt="DISK2_L6_3" src="https://github.com/user-attachments/assets/30ed1b27-5d6b-4f14-b58a-bd2251081958" />
+
 
 **Conclusion**
 
@@ -497,9 +494,10 @@ Once pinch-off occurs, the MOSFET enters the saturation region. The channel volt
 <details>
 <summary><b>L1 - Basic SPICE Setup</b></summary>
 
-<p align="center">
-  <img src="DISK3_L1_1.png" width="800">
-</p>
+
+
+<img width="602" height="328" alt="DISK3_L1_1" src="https://github.com/user-attachments/assets/7ecb52e0-496b-4d02-b264-3d91f9776b72" />
+
 
 So far, we have understood how an NMOS transistor behaves physically. We studied channel formation, linear region operation, saturation, pinch-off, and channel length modulation.
 
@@ -520,9 +518,9 @@ Think of SPICE as a calculator that already knows all the complicated transistor
 
 **What are Nodes in SPICE?**
 
-<p align="center">
-  <img src="DISK3_L1_2.png" width="800">
-</p>
+<img width="602" height="303" alt="DISK3_L1_2" src="https://github.com/user-attachments/assets/1058a125-658c-4075-b288-dfcf4cf62490" />
+
+
 
 Before SPICE can analyze a circuit, it must know how every component is connected.
 
@@ -545,10 +543,9 @@ Without nodes, SPICE would not know how the circuit is interconnected.
 
 <details>
 <summary><b>L2 - Circuit Description in SPICE Syntax</b></summary> 
-  
-<p align="center">
-  <img src="DISK3_L2_1.png" width="800">
-</p>
+
+<img width="602" height="229" alt="DISK3_L2_1" src="https://github.com/user-attachments/assets/5a95551c-00df-4d96-aa39-0465b293bdfc" />
+
 
 Once the nodes are defined, we must tell SPICE what components are present in the circuit.
 
@@ -578,9 +575,8 @@ Together, these statements form the SPICE Netlist, which is simply a textual des
 <details>
 <summary><b>L3 - Technology Parameters</b></summary>
 
-<p align="center">
-  <img src="DISK3_L3_1.png" width="800">
-</p>
+<img width="602" height="335" alt="DISK3_L3_1" src="https://github.com/user-attachments/assets/f4b30bca-8a6e-4f0c-b0c1-97807aad40d7" />
+
 
 Describing the circuit connections alone is not enough.
 
@@ -597,9 +593,9 @@ These values are technology-dependent and are provided by the semiconductor foun
 
 You can think of this model as the transistor's DNA. It completely defines how the transistor behaves electrically.
 
-<p align="center">
-  <img src="DISK3_L3_2.png" width="800">
-</p>
+
+<img width="602" height="338" alt="DISK3_L3_2" src="https://github.com/user-attachments/assets/52592bfa-0781-48c9-b7c6-17ff6972d5b2" />
+
 
 Instead of writing hundreds of model parameters inside every circuit file, all these parameters are grouped into a separate model file.
 
@@ -618,9 +614,7 @@ Whenever SPICE runs, it reads this file and uses these parameters to accurately 
 
 These are packaged into a model file such as:
 
-<p align="center">
-  <img src="DISK3_L3_3.png" width="800">
-</p>
+<img width="602" height="337" alt="DISK3_L3_3" src="https://github.com/user-attachments/assets/cd1fb655-c3a3-42c3-9ecf-10df0c345e38" />
 
 Once the circuit netlist and technology file are ready, we connect them together. As shown in the above figure, the simulation file includes:
 
@@ -635,9 +629,7 @@ At this point SPICE has all the information required to start the simulation.
 <details>
 <summary><b>L4 - First SPICE Simulation</b></summary>
 
-<p align="center">
-  <img src="DISK3_L4_1.png" width="800">
-</p>
+<img width="452" height="210" alt="DISK3_L4_1" src="https://github.com/user-attachments/assets/1d30d4e0-06e4-4182-98db-4eaaa9970a5d" />
 
 Now the simulation is executed.
 
@@ -651,13 +643,10 @@ It then solves the transistor equations internally and calculates:
 
 As shown in teh figure, the simulator successfully processes the circuit and displays the simulation information in the terminal.
 
-This confirms that the circuit description and model files have been read correctly.
+This confirms that the circuit description and model files have been read correctl
 
 
-<p align="center">
-  <img src="DISK3_L4_2.png" width="800">
-</p>
-
+<img width="452" height="309" alt="DISK3_L4_2" src="https://github.com/user-attachments/assets/61434c9d-035d-47da-bdb8-4fe6ac6affe9" />
 
 After simulation, SPICE generates several output vectors.  
 
@@ -669,9 +658,8 @@ After simulation, SPICE generates several output vectors.
 
 These are the numerical results produced by the simulator.
 
-<p align="center">
-  <img src="DISK3_L4_3.png" width="800">
-</p>
+
+<img width="452" height="204" alt="DISK3_L4_3" src="https://github.com/user-attachments/assets/8851d913-2480-416b-a8e8-1d1617733f21" />
 
 Finally, SPICE plots the ID-VDS characteristics of the NMOS transistor.
 
@@ -683,9 +671,8 @@ This is one of the biggest advantages of simulation.
 
 **Why is the Plot Command Written as -vdd#branch?**
 
-<p align="center">
-  <img src="DISK3_L4_3.png" width="800">
-</p>
+
+<img width="452" height="204" alt="DISK3_L4_3" src="https://github.com/user-attachments/assets/b5a4c948-5415-47aa-99f6-3aa3297a816d" />
 
 
 A common question is why the current is plotted as: -vdd#branch instead of vdd#branch 
@@ -744,6 +731,7 @@ The SPICE deck below demonstrates this comparison, where only **W** and **L** ar
 
 <details>
 <summary><b>L2 - Drain current vs gate voltage for long and short channel device?</b></summary>
+
 
 
 
