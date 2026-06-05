@@ -731,9 +731,202 @@ The SPICE deck below demonstrates this comparison, where only **W** and **L** ar
 
 <details>
 <summary><b>L2 - Drain current vs gate voltage for long and short channel device?</b></summary>
+Up to now, the drain current equations that we studied for MOSFETs suggested that the drain current in saturation is proportional to the square of the overdrive voltage (VGS − VT). This means that if we increase the gate voltage, the drain current should increase quadratically. To verify this behavior, simulations were performed on both long-channel and short-channel devices.
+ 
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/c871d202-efc7-4c9c-b592-77ed513ef0da" />
+
+The drain current characteristics of a long-channel MOSFET were first analyzed. From the graph, it can be observed that the drain current increases slowly at lower gate voltages and rises rapidly as the gate voltage increases further. This behavior follows the classical square-law relationship of MOSFETs. The curved nature of the graph clearly indicates this quadratic dependence.
+
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/9759c777-0376-48d0-943a-3d4b03feecdd" />
+
+However, when we look at the short-channel device, a different behavior starts to appear. Initially, for lower values of gate voltage, the current still follows the expected quadratic relationship. But as the gate voltage continues to increase, the drain current starts becoming almost linearly dependent on VGS. This can be observed from the nearly constant spacing between adjacent current curves. Instead of increasing rapidly according to the square law, the current begins increasing at a more constant rate.
+
+The important takeaway is:
+- Long-channel MOSFET → Drain current follows quadratic dependence on VGS.
+- Short-channel MOSFET → Initially quadratic, then gradually becomes linear with increasing VGS.
+
+This difference becomes very important in modern technologies where transistor lengths are extremely small.
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/7601ed61-ff59-4910-9801-899aa0fa1a31" />
+
+To observe this behavior more clearly, a simulation was set up where the drain voltage was kept constant at 2.5 V while the gate voltage was swept from 0 V to 2.5 V. The objective was to directly plot the relationship between drain current and gate voltage.
+
+<img width="940" height="503" alt="image" src="https://github.com/user-attachments/assets/2335b3df-5ef9-4bb7-b593-763218de2ffb" />
+
+The corresponding SPICE setup used for the simulation is shown above. The gate voltage was varied while monitoring the drain current. This allows us to visualize how the current responds to changes in gate bias.
+
+<img width="853" height="785" alt="image" src="https://github.com/user-attachments/assets/021e0d00-b605-476e-8686-2f1ee5922a13" />
+
+This figure shows the simulation execution and extraction of the required current parameters from NGSPICE.
+
+<img width="460" height="329" alt="image" src="https://github.com/user-attachments/assets/65a2983c-bbb3-40b0-84af-522e536201de" /><img width="454" height="330" alt="image" src="https://github.com/user-attachments/assets/72a60ddd-468a-43a2-83ba-e6c80a5acd68" />
+
+The resulting graph for a long-channel device clearly resembles a parabola, confirming that drain current is proportional to the square of the gate overdrive voltage. The graph is clearly quadratic and matches the long-channel MOSFET current equation.
+
+<img width="940" height="483" alt="image" src="https://github.com/user-attachments/assets/c3b578ed-88d2-4bce-add4-04d643a44109" />
+
+Next, the same experiment was repeated for a short-channel MOSFET. Only the device dimensions were changed to represent a short-channel transistor while keeping the same analysis procedure.
+
+<img width="610" height="423" alt="image" src="https://github.com/user-attachments/assets/3759c8c2-393b-4b0b-be68-7122a83e5d0b" />
 
 
+Unlike the previous graph, this curve is almost linear after the threshold region. Instead of rising quadratically, the drain current increases nearly proportionally with gate voltage. This observation indicates that an additional physical effect is limiting the current growth in short-channel devices.
 
+</details>
+
+<details>
+<summary><b>L3-Velocity saturation at lower and higher electric fields</b></summary>
+
+At this point, an important question arises.
+
+If the drain current equation predicts quadratic growth, why does the short-channel device show almost linear behavior?
+
+The answer lies in a phenomenon called Velocity Saturation.
+
+To understand velocity saturation, let us recall that electrons move through the channel because of the electric field created between source and drain. Electron velocity can be expressed as:
+
+v = μnE
+
+where μn is the electron mobility and E is the electric field.
+
+This equation tells us that electron velocity should increase linearly with electric field. This assumption is valid only at lower electric fields.
+
+<img width="940" height="509" alt="image" src="https://github.com/user-attachments/assets/968de4c0-bfb3-43cb-9be0-5fc91baba58e" />
+
+This figure compares long-channel and short-channel devices. The long-channel device continues to exhibit quadratic current growth, whereas the short-channel device begins transitioning toward linear behavior.
+
+<img width="940" height="427" alt="image" src="https://github.com/user-attachments/assets/c15f8f4e-c852-4b66-a60d-4cf2f6175d35" />
+
+At lower electric fields, electron velocity increases almost linearly with the electric field according to the mobility equation.
+
+However, electrons cannot keep accelerating forever. As the electric field becomes very large, electrons experience more collisions with the silicon lattice. These collisions are called scattering effects.
+
+<img width="940" height="404" alt="image" src="https://github.com/user-attachments/assets/2c5fdea1-83c5-4a4d-9c86-94b60d9b84f7" />
+
+As electric field increases further, the electron velocity gradually approaches a maximum value and stops increasing significantly.
+
+<img width="940" height="470" alt="image" src="https://github.com/user-attachments/assets/5c6557a7-642a-44f1-b6fc-b3c83c28c469" />
+
+The graph clearly shows two regions:
+
+- Low electric field region → Velocity increases linearly.
+- High electric field region → Velocity becomes almost constant.
+
+This constant velocity region is known as velocity saturation.
+
+<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/72bf0494-8e7b-42ee-8b48-d75b5519e128" />
+
+A mathematical model is introduced to smoothly represent the transition from linear velocity behavior to saturation velocity behavior.
+
+<img width="940" height="521" alt="image" src="https://github.com/user-attachments/assets/b838d47f-0b57-4e81-84b1-9065b2b06b27" />
+
+This model ensures continuity between both operating regions and accurately represents carrier transport at higher electric fields.
+
+Because short-channel devices have very small channel lengths, even moderate drain voltages can create extremely high electric fields. Therefore, electrons quickly reach their saturation velocity.
+
+Once the velocity becomes constant, increasing gate voltage can no longer increase current according to the square-law relationship. As a result, the drain current begins to show a more linear dependence on gate voltage rather than a quadratic dependence.
+
+This is the fundamental reason why short-channel MOSFETs deviate from classical long-channel equations.
+
+<img width="940" height="537" alt="image" src="https://github.com/user-attachments/assets/85e6411f-8485-49e9-bee6-23dede0b0b3c" />
+
+Using the velocity saturation expression, the drain current equation can be re-derived. The resulting equation becomes much more accurate for short-channel technologies, although it is more difficult to use for manual calculations.
+
+<img width="940" height="472" alt="image" src="https://github.com/user-attachments/assets/d0978a09-fb2c-49a0-b352-b32586c8d7c2" />
+
+This figure summarizes the operating regions:
+
+- Long Channel → Cutoff, Linear, Saturation
+- Short Channel → Cutoff, Linear, Velocity Saturation, Saturation
+
+Velocity saturation becomes an additional operating behavior that is particularly important in deep submicron technologies.
+
+## Key Observations
+- Long-channel MOSFETs follow the classical square-law current model.
+- Short-channel MOSFETs gradually deviate from the square-law model.
+- Carrier velocity increases linearly only at lower electric fields.
+- At higher electric fields, carrier velocity reaches a maximum saturation value.
+- Velocity saturation limits drain current growth in modern technologies.
+-This effect causes the drain current characteristics of short-channel devices to become nearly linear.
+**Conclusion**
+
+The classical MOSFET current equations accurately describe long-channel devices, where drain current varies approximately as the square of the gate overdrive voltage. However, as transistor dimensions shrink, extremely high electric fields develop inside the channel. These high fields cause electron velocity to saturate due to scattering effects. Once velocity saturation occurs, the drain current can no longer increase quadratically and instead begins showing a nearly linear dependence on gate voltage. This explains the differences observed between long-channel and short-channel MOSFET characteristics and highlights why modern technologies require more advanced current models than the traditional square-law equations.
+
+</details>
+
+<details>
+<summary><b>L4 - Velocity saturation drain current model</b></summary>
+ 
+In the previous section, we learned that short-channel MOSFETs no longer follow the ideal square-law relationship because the carriers eventually reach their saturation velocity. This naturally raises an important question: if the classical drain current equation is no longer accurate, how can we model the current of short-channel devices?
+
+<img width="940" height="580" alt="image" src="https://github.com/user-attachments/assets/b1c6a15f-627e-471f-9162-ca4ecccc0ae1" />
+
+To answer this question, a velocity saturation based drain current model is introduced. Unlike the classical MOSFET equation, this model takes into account the fact that carrier velocity cannot increase indefinitely. At lower electric fields, the current still behaves similarly to the long-channel model. However, once velocity saturation begins, the current growth slows down and becomes more linear.
+
+<img width="940" height="560" alt="image" src="https://github.com/user-attachments/assets/4b1bfe29-9553-4c7d-b6f5-70c20e0da4fc" />
+
+
+- There are three possible cases depending on which parameter is the minimum among (V_{GT}), (V_{DS}), and (V_{DSAT}).
+- When (V_{GT}) is the minimum ((V_{GT} < V_{DS}) and (V_{GT} < V_{DSAT})), the minimum-function model selects (V_{GT}) as (V_{min}). Substituting (V_{min} = V_{GT}) into the drain current equation results in a current expression that becomes independent of (V_{DS}), giving a nearly constant drain current.
+- Physically, saturation occurs when the drain voltage is sufficiently large such that further increases in (V_{DS}) do not significantly increase the drain current. Since (V_{DS}) is already greater than the limiting voltage (V_{GT}), the channel reaches pinch-off and the device operates in the saturation region.
+- Therefore, for both long-channel and short-channel devices, the condition where (V_{GT}) is the minimum parameter indicates saturation operation, as the drain current has reached its limiting value and is no longer controlled by (VDS)
+
+<img width="940" height="549" alt="image" src="https://github.com/user-attachments/assets/f49f1e3d-bde0-495c-837b-071c66caa88c" />
+
+There are three possible cases depending on which parameter is the minimum among Vgt, Vds, and Vdsat.
+
+  When Vgt is the minimum (Vgt < Vds and Vgt < Vdsat), the minimum-function model selects Vgt as Vmin. Substituting Vmin = Vgt into the drain current equation results in a current expression that becomes independent of Vds, giving a nearly constant drain current.
+
+  Physically, saturation occurs when the drain voltage is sufficiently large such that further increases in Vds do not significantly increase the drain current. Since Vds is already greater than the limiting voltage Vgt, the channel reaches pinch-off and the device operates in the saturation region.
+
+  Therefore, for both long-channel and short-channel devices, the condition where Vgt is the minimum parameter indicates saturation operation, as the drain current has reached its limiting value and is no longer controlled by Vds.
+
+When Vds is the minimum parameter (Vds < Vgt and Vds < Vdsat), the minimum-function model selects Vds as Vmin. This corresponds to the condition where the drain-to-source voltage is relatively small compared to the gate overdrive voltage.
+
+  Substituting Vmin = Vds into the drain current equation and considering low Vds, the channel-length modulation term 1 + λVds becomes approximately unity, since λVds << 1. Under this condition, the drain current varies nearly linearly with Vds.
+
+  As a result, the current equation reduces to the familiar linear (or triode) region expression. Therefore, when Vds is the minimum parameter, the device operates in the linear region, where the channel is formed along the entire length and the drain current is controlled by both Vgs and Vds.
+
+  <img width="940" height="459" alt="image" src="https://github.com/user-attachments/assets/93869e7f-e532-43cb-a862-cee136d08480" />
+
+<img width="940" height="449" alt="image" src="https://github.com/user-attachments/assets/daf0d1bd-a35b-4d18-8b9f-a7070e78bb48" />
+
+Peak current in a short-channel MOSFET is lower than that of a long-channel MOSFET due to velocity saturation.
+
+  In a long-channel MOSFET, pinch-off occurs at a relatively higher Vds because the channel length is larger. Before pinch-off, carriers continue to accelerate as the electric field increases, resulting in a higher drain current.
+
+  In a short-channel MOSFET, pinch-off occurs at a much lower Vds because the channel length is small. Once pinch-off occurs, channel length modulation begins, causing the effective channel length to reduce as Vds increases.
+
+  Although the depletion region near the drain continues to widen and the electric field continues to increase with increasing Vds, the carrier velocity cannot increase indefinitely. Beyond a critical electric field, electrons reach their saturation velocity.
+
+  As a result, further increases in Vds do not produce a proportional increase in carrier velocity. Since the drain current depends on carrier velocity, the current increase becomes limited.
+
+  Therefore, even though channel length modulation tends to increase drain current, velocity saturation restricts the carrier velocity, resulting in a lower peak drain current in short-channel MOSFETs compared to long-channel MOSFETs.
+
+</details>
+
+<details>
+<summary><b>L5 - Labs Sky130 Id-Vgs</b></summary>
+<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/f27deaf0-8278-49ce-95c3-5348f28bf6cc" />
+
+Now we can show the graphs between short channel & long channel mosfets. Mosfets with width less than 250 microns are called as short channel mosfet.
+
+<img width="940" height="595" alt="image" src="https://github.com/user-attachments/assets/6bc1e03f-0f46-4cc3-a55a-af931e16bd4d" />
+
+<img width="940" height="449" alt="image" src="https://github.com/user-attachments/assets/36d24f17-a08a-4313-9b50-474f0751a97e" />
+
+<img width="940" height="609" alt="image" src="https://github.com/user-attachments/assets/54288dcb-40a1-4831-99c1-e83907e37888" />
+
+Eventhough the starting Id has a quadratic dependency on Vgs. But later it became linear. Now Vdd is kept constant at 1.8V Vgs is increased from 0 to 1.8. The graph is almost linear. 
+
+
+</details>
+
+<details>
+<summary><b>L6 - Labs Sky130 Vt</b></summary>
+
+<img width="940" height="609" alt="image" src="https://github.com/user-attachments/assets/f3339678-d3e2-4a21-8ff9-45351c6854fa" />
+
+To get the threshold voltage, take the slope over the Vgs vs Id graph. It comes to apprx 0.77 Volts.
 
 
 
