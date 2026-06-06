@@ -1603,3 +1603,235 @@ When W of pmos increases the Vm switches towards right. And moreover the rise de
  <details>
 <summary><b>L6 - Applications of CMOS inverter in clock network and STA</b></summary>
 
+<img width="940" height="480" alt="image" src="https://github.com/user-attachments/assets/b55ec136-70c5-4faf-b641-24774c5d7ac1" />
+
+In a CMOS inverter, the rise delay and fall delay are determined by how quickly the PMOS charges the load capacitance and how quickly the NMOS discharges it. Since electron mobility is higher than hole mobility, an NMOS transistor is naturally stronger than a PMOS transistor of the same size. As a result, the output falls faster than it rises when both transistors have equal widths. To balance the rise and fall delays, the PMOS width is increased, typically by 2–3 times the NMOS width, so that the pull-up and pull-down strengths become nearly equal. This sizing technique is especially important in clock buffers, where equal rise and fall delays help maintain a 50% duty cycle, reduce clock distortion, and ensure reliable clock distribution throughout the chip.
+
+**Effect of PMOS Width on Resistance and Delay**
+
+The ON resistance of a MOSFET is inversely proportional to its width. Therefore, increasing the transistor width does not increase its resistance; instead, it reduces the ON resistance by providing a wider conduction path for charge carriers. In a CMOS inverter, the PMOS transistor is naturally weaker than the NMOS transistor because hole mobility is lower than electron mobility. As a result, for equal transistor sizes, the PMOS exhibits a higher ON resistance, causing the output rise delay to be larger than the fall delay. To compensate for this, the PMOS width is increased, which reduces its ON resistance and increases its drive strength. The PMOS is typically sized 2–3 times wider than the NMOS so that the pull-up and pull-down resistances become approximately equal. This helps achieve nearly equal rise and fall delays, which is especially important in clock buffers to preserve duty cycle, minimize clock distortion, and ensure reliable clock distribution throughout the chip.
+
+These are used in clock buffers.
+
+<img width="940" height="525" alt="image" src="https://github.com/user-attachments/assets/7c867435-e754-4cd9-a832-cc2aa8531ec4" />
+
+As seen in the figure, for a clock source to provide clock to the destination cells, buffers are used. When we use 2 cmos inverters in a serial manner, a buffer is formed. But we can have an inverter with many combinations of W/L for the pmos & nmos. But when a combination of (W/L)Pmos = x(W/L)Nmos is made where rise delay & fall delay are almost equal(in the table second row), then we can expect a symmetrical clock waveform.
+
+Conclusion:
+
+
+**Effect of Switching Threshold on Robustness**
+
+The switching threshold (Vm) determines the input voltage at which a CMOS inverter changes its output state and therefore plays a key role in its robustness. Ideally, Vm is designed close to VDD/2 so that both logic HIGH and logic LOW have nearly equal noise margins. Consider a CMOS inverter operating at VDD = 1.8 V. If the switching threshold is shifted too high, for example Vm = 1.3 V, the inverter requires a much higher input voltage to confidently recognize a logic HIGH. In this case, if a logic HIGH signal of 1.8 V experiences noise or voltage drop and reduces to 1.5 V, the safety margin becomes only 1.5 V − 1.3 V = 0.2 V. This means even a small additional disturbance can cause the signal to be misinterpreted. On the other hand, if Vm is 0.9 V, the same 1.5 V signal still has a margin of 0.6 V before reaching the switching threshold, making it much more tolerant to noise. Therefore, a switching threshold close to the middle of the supply voltage provides balanced noise margins and improves the robustness and reliability of the CMOS inverter.
+
+
+</details>
+
+
+## 4️⃣ Noise Margin & Robustness Analysis
+
+
+
+### Static behavior evaluation – CMOS inverter robustness – Switching Threshold
+
+
+
+<details>
+<summary><b>L1 - Introduction to Noise Margin</b></summary>
+
+Next step to identify the robustness of a cmos inverter is the noise margin. 
+
+The first one is the ideal characteristics of a cmos. 
+
+<img width="907" height="463" alt="image" src="https://github.com/user-attachments/assets/024be3c4-01a3-4887-b52e-b0b90e0e0adf" />
+
+This means that wherever there is a change in Vin we can expect correct & sudden change in Vout. This makes the gain & infinity. But this is not possible always. As we have seen in out previous spice simulation results there is a gradual change in the output of a cmos inverter as shown in the second graph.
+
+To fully characterize the logic levels of a CMOS inverter, four important voltage points must be identified. These voltages define the valid logic "0" and logic "1" ranges at both the input and output.
+
+The four voltages are:
+
+- VIL : Maximum input voltage recognized as Logic 0.
+- VIH : Minimum input voltage recognized as Logic 1.
+- VOL : Maximum output voltage corresponding to Logic 0.
+- VOH : Minimum output voltage corresponding to Logic 1.
+
+<img width="940" height="607" alt="image" src="https://github.com/user-attachments/assets/7e22397f-7367-4c41-9750-a283b03a50f0" />
+
+ 
+<img width="940" height="572" alt="image" src="https://github.com/user-attachments/assets/784ae75f-0cec-4f68-829c-7a55119ad5a6" />
+
+
+<img width="940" height="646" alt="image" src="https://github.com/user-attachments/assets/01404819-df53-43d6-9809-1b6ca8467410" />
+
+
+<img width="940" height="593" alt="image" src="https://github.com/user-attachments/assets/237fd41f-017e-4cf7-9227-1d6e8366bdf1" />
+
+</details>
+
+<details>
+<summary><b>L2 - Noise margin voltage parameters</b></summary>
+
+<img width="940" height="551" alt="image" src="https://github.com/user-attachments/assets/b482e44d-be6d-4f9e-9439-250a76e24006" />
+
+To determine the noise margins of a CMOS inverter, the most important points to inspect are those near the transition region of the Voltage Transfer Curve (VTC). These points define the boundaries between valid logic levels and the region where the inverter is highly sensitive to input variations.
+
+Before the transition begins, consider the case where:
+
+
+Vin = 0 V
+
+
+The PMOS is ON and the NMOS is OFF.
+
+As a result:
+
+- The output capacitor is fully charged.
+- Vout ≈ VDD.
+- The output represents a valid Logic 1.
+
+In this region, the slope of the VTC is very small:
+
+
+|dVout/dVin| < 1
+
+
+This is a desirable condition because any small noise appearing at the input is attenuated at the output.
+
+For example, if a noise voltage ΔVin appears at the input:
+
+
+ΔVout = (dVout/dVin) × ΔVin
+
+
+Since:
+
+
+|dVout/dVin| < 1
+
+
+the output disturbance is smaller than the input disturbance.
+
+Therefore:
+
+- Noise is attenuated.
+- Logic levels are restored.
+- Cascaded logic gates operate reliably.
+
+A similar condition exists near:
+
+
+Vin ≈ VDD
+
+
+where the output is close to Logic 0 and the magnitude of the gain is again less than one.
+
+However, in the transition region, both PMOS and NMOS conduct simultaneously.
+
+A small change in Vin now produces a large change in Vout.
+
+Therefore:
+
+
+|dVout/dVin| > 1
+
+
+In this region:
+
+- Noise can be amplified.
+- The inverter becomes highly sensitive to input variations.
+- The output rapidly transitions from VDD to 0 V.
+
+Because the transition region is the most critical region for noise analysis, the boundaries of the valid logic levels are defined at the points where:
+
+
+|dVout/dVin| = 1
+
+
+These two points determine:
+
+- VIL (Maximum Input Logic 0)
+- VIH (Minimum Input Logic 1)
+
+Graphically, they correspond to the locations on the VTC where the slope is equal to -1.
+
+Therefore, the search for VIL and VIH begins by identifying the two points on the VTC where:
+
+
+|dVout/dVin| = 1
+
+
+Everything outside these points represents stable logic regions where noise is attenuated, while the region between them corresponds to the inverter transition region where the output changes rapidly from Logic 1 to Logic 0.
+
+Now we need to compare this al most ideal curve with the actual graph we got as part of spice simulations. The corresponding VIL,VIH,VOH,VOL are marked. 
+When the input is to be considered as a logic “0”, it should be below the VIL. At that time when the output is logic “1” it should be above VOH. This output might get connected to another logic as input as logic “1”. When input must be considered as logic “1”, it has to be above VIH. So VOH which might be sometimes become input to another logic also must satisfy VIH condition. So VOH should be always higher than VIH.
+
+Like that when input is logic “1” it should be higher than VIH. When output is considered as logic “0” it should be less than VOL. When VOL when connected as an input to some other logic as logic “0” should satisfy the VIL condition.
+VOL<VIL
+VOH>VIH
+So 
+VOH>VIH>VIL>VOL
+
+
+</details>
+
+<details>
+<summary><b>L3 - Noise margin equation and summary</b></summary>
+
+<img width="940" height="620" alt="image" src="https://github.com/user-attachments/assets/16941290-9dce-4fc9-8a93-41988b493357" />
+
+We should calculate high & low noise margins like this.
+
+<img width="940" height="664" alt="image" src="https://github.com/user-attachments/assets/5465e850-baef-4908-b448-d0e47c67dd74" />
+
+The undefined range should the range between high & low noise margins & this should be as minimum as possible. 
+<img width="940" height="567" alt="image" src="https://github.com/user-attachments/assets/ffc62a20-917b-406a-9a04-d070d083ce5e" />
+
+<img width="940" height="632" alt="image" src="https://github.com/user-attachments/assets/a57588d8-cf02-4318-aa6f-c34a4fc6033d" />
+
+Basically if any bump in the input or output voltage reaches this undefined region, the transistor will get confused to take it under logic "1" or "0".
+
+</details>
+
+<details>
+<summary><b>L4 - Noise margin variation with respect to PMOS width</b></summary>
+
+There are many regions where gain=1, gain>1 & gain <1.
+As an inverter, during the normal state, where a logic “0” should stay in the logic “0” state even during the addition of noise & for logic “1” for the same, gain<1. Why because that time when gain >1, means change in Vout is more than change in Vin, the input with noise addition will get amplified. This should not happen. But during the switching time, we can have more gain, because that’s the expected outcome. When Vdd is 1.8V, after VIL, the output VOH, should have a sweep atleast till Vdd itself. So gain is more than 1. 
+
+<img width="940" height="504" alt="image" src="https://github.com/user-attachments/assets/6a396744-6b43-4742-b4a1-1d4359cd95d3" />
+
+
+So when a cmos inverter is immune to noise, it should have a broad spectrum of high & low noise margin. So that the noise region becomes low. Now we need to see the noise margin variations with respect to nmos/pmos device parameters.  Pmos is responsible for holding the capacitor charge. So when the size of pmos increases, eventually the noise margin also increases.
+
+<img width="940" height="482" alt="image" src="https://github.com/user-attachments/assets/f1926d63-8e73-460d-a545-43236121b2a3" />
+
+But when as pmos size increases, nmos becomes weaker, so the ability of nmos to take out the current from output capacitor decreases.
+
+<img width="940" height="466" alt="image" src="https://github.com/user-attachments/assets/2e0d605b-3ef2-42d9-bfb2-4bfe709e1e8f" />
+
+After a certain limit. The noise margins will become constant.
+
+<img width="940" height="418" alt="image" src="https://github.com/user-attachments/assets/e9f5adc7-a615-4208-ab06-7f0102820040" />
+
+
+<img width="940" height="566" alt="image" src="https://github.com/user-attachments/assets/ea024b02-82dd-4306-a421-b3a738a3220a" />
+
+This region can be used for digital design because digital design is all about considering Logic 1 & 0.
+
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/da3a8567-224f-46ff-8b16-e58f632d993b" />
+
+</details>
+
+<details>
+<summary><b>L5 - Noise margin labs</b></summary>
+
+<img width="940" height="489" alt="image" src="https://github.com/user-attachments/assets/f612e60d-745e-4c60-ac1d-9811d8e2518c" />
+
+<img width="940" height="742" alt="image" src="https://github.com/user-attachments/assets/0b784723-a0d1-4acb-8c23-0732c3156937" />
+
+**NMh= VOH-VIH=703mV**
+**NMl=VIL-VOL=667Mv**
+
+</details>
+
