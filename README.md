@@ -4,7 +4,10 @@
 > This repository documents a hands-on CMOS circuit design workshop using the open-source SKY130 technology node. Over 10 intensive days, participants explore transistor-level modeling, SPICE-based simulations, and robustness analysis across process and voltage variations. Each module combines concise theory, guided simulations, and real-world design exercises, producing reproducible plots and verified design insights. The materials cover MOSFET physics, inverter characterization, noise-margin optimization, dynamic performance, and integration with open-source digital flows like OpenLane and VSDFlow, preparing learners for silicon-ready design.
 
 ---
-![CMOS Workshop Banner](images/cmos_banner.png)
+
+
+<img width="1774" height="887" alt="ChatGPT Image Jun 6, 2026, 04_12_01 PM" src="https://github.com/user-attachments/assets/56a66196-37f0-4830-a5c6-e3a1bf299636" />
+
 
 ## 📚 Table of Contents
 1. [Mosfet Fundamental & Spice Setup](#mosfet-fundamental--spice-setup)
