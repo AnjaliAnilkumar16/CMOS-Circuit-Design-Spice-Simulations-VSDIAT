@@ -1835,3 +1835,450 @@ This region can be used for digital design because digital design is all about c
 
 </details>
 
+
+## Day 5️⃣: Power Supply & Process Variation Evaluation
+
+### Static behavior evaluation – CMOS inverter robustness – Power supply variation
+
+<details>
+<summary><b>L1 - Smart SPICE simulation for power supply variations</b></summary>
+
+<img width="940" height="323" alt="image" src="https://github.com/user-attachments/assets/9631c156-1318-41b3-9daa-7833711d21f3" />
+
+To evaluate the robustness of a CMOS inverter, it is often necessary to analyze its behavior under different supply voltages (VDD). Parameters such as switching threshold, noise margin, delay, and power consumption can vary significantly with supply voltage.
+
+One straightforward approach is to create multiple SPICE files, where each file uses a different value of VDD and runs the same simulation.
+
+For example:
+
+
+File 1 → VDD = 1.8 V
+File 2 → VDD = 2.0 V
+File 3 → VDD = 2.2 V
+File 4 → VDD = 2.5 V
+
+
+However, this approach becomes tedious because:
+
+- Multiple SPICE files must be maintained.
+- Any circuit modification must be updated in every file.
+- Simulation setup becomes repetitive and error-prone.
+
+To simplify the process, TCL scripting can be embedded inside the SPICE control block. Instead of creating multiple netlists, a single SPICE file can automatically sweep through different VDD values and execute the required simulations.
+
+The TCL script can:
+
+- Change the VDD value automatically.
+- Run the simulation for each supply voltage.
+- Store the output data.
+- Generate plots for comparison.
+
+This approach provides:
+
+- Better automation.
+- Reduced manual effort.
+- Easier robustness analysis.
+- Faster evaluation across multiple operating conditions.
+
+Therefore, instead of maintaining "n" separate SPICE files for "n" different supply voltages, a single SPICE netlist combined with TCL scripting can be used to automate the entire VDD sweep and robustness analysis process.
+
+
+<img width="814" height="376" alt="image" src="https://github.com/user-attachments/assets/fe911b76-984b-4009-96f5-8c7678d77007" />
+
+### Purpose of this Script
+
+This script automatically runs the inverter DC sweep for multiple values of VDD without creating separate SPICE files.
+
+Instead of manually simulating:
+
+```text
+VDD = 2.5 V
+VDD = 2.0 V
+VDD = 1.5 V
+VDD = 1.0 V
+VDD = 0.5 V
+```
+
+the script changes VDD automatically and runs the simulation repeatedly.
+
+---
+
+### Step 1: Enter Control Mode
+
+```spice
+.control
+```
+
+Everything inside `.control` and `.endc` is interpreted as NGSPICE commands rather than circuit descriptions.
+
+---
+
+### Step 2: Initialize VDD
+
+```spice
+let powerSupply = 2.5
+alter Vdd = powerSupply
+```
+
+Creates a variable called:
+
+```text
+powerSupply = 2.5 V
+```
+
+and assigns this value to the voltage source named `Vdd`.
+
+Initially:
+
+```text
+VDD = 2.5 V
+```
+
+---
+
+### Step 3: Create a Loop Counter
+
+```spice
+let voltageSupplyVariation = 0
+```
+
+This variable keeps track of how many simulations have been completed.
+
+Initially:
+
+```text
+voltageSupplyVariation = 0
+```
+
+---
+
+### Step 4: Start the Loop
+
+```spice
+dowhile voltageSupplyVariation < 5
+```
+
+Run the commands inside the loop while:
+
+```text
+voltageSupplyVariation < 5
+```
+
+Therefore the loop executes:
+
+```text
+0
+1
+2
+3
+4
+```
+
+Total:
+
+```text
+5 simulations
+```
+
+---
+
+### Step 5: Run DC Sweep
+
+```spice
+dc Vin 0 2.5 0.01
+```
+
+Perform a DC sweep of the inverter input.
+
+SPICE solves the circuit for:
+
+```text
+Vin = 0.00 V
+Vin = 0.01 V
+Vin = 0.02 V
+...
+Vin = 2.50 V
+```
+
+This generates one complete VTC curve for the current VDD value.
+
+---
+
+### Step 6: Reduce Supply Voltage
+
+```spice
+let powerSupply = powerSupply - 0.5
+```
+
+After one simulation finishes:
+
+```text
+2.5 → 2.0
+2.0 → 1.5
+1.5 → 1.0
+1.0 → 0.5
+0.5 → 0.0
+```
+
+The supply voltage is reduced by:
+
+```text
+0.5 V
+```
+
+each iteration.
+
+---
+
+### Step 7: Update the Circuit
+
+```spice
+alter Vdd = powerSupply
+```
+
+Changes the actual voltage source value inside the circuit.
+
+For example:
+
+```text
+First run  → VDD = 2.5 V
+Second run → VDD = 2.0 V
+Third run  → VDD = 1.5 V
+Fourth run → VDD = 1.0 V
+Fifth run  → VDD = 0.5 V
+```
+
+---
+
+### Step 8: Increment Counter
+
+```spice
+let voltageSupplyVariation = voltageSupplyVariation + 1
+```
+
+Counter becomes:
+
+```text
+0 → 1
+1 → 2
+2 → 3
+3 → 4
+4 → 5
+```
+
+---
+
+### Step 9: End Loop
+
+```spice
+end
+```
+
+When:
+
+```text
+voltageSupplyVariation = 5
+```
+
+the condition becomes false and the loop stops.
+
+---
+
+### Step 10: Plot All Curves Together
+
+```spice
+plot dc1.out vs in dc2.out vs in dc3.out vs in dc4.out vs in dc5.out vs in
+```
+
+Plot the output voltage versus input voltage for all five simulations on the same graph.
+
+Therefore we obtain:
+
+```text
+VTC for VDD = 2.5 V
+VTC for VDD = 2.0 V
+VTC for VDD = 1.5 V
+VTC for VDD = 1.0 V
+VTC for VDD = 0.5 V
+```
+
+on a single plot.
+
+---
+
+### Axis Labels
+
+```spice
+xlabel "input voltage [V]"
+ylabel "output voltage [V]"
+```
+
+Sets:
+
+```text
+X-axis → Input Voltage
+Y-axis → Output Voltage
+```
+
+---
+
+### Plot Title
+
+```spice
+title "Inverter dc characteristics as a function of supply voltage"
+```
+
+Adds a title to the graph.
+
+---
+
+### Exit NGSPICE
+
+```spice
+quit
+.endc
+```
+
+Terminates the simulation and exits NGSPICE.
+
+---
+
+### In One Sentence
+
+This script automatically sweeps the inverter input voltage for five different supply voltages (2.5 V, 2.0 V, 1.5 V, 1.0 V, and 0.5 V), plots all the VTC curves on the same graph, and helps evaluate how robust the inverter is against VDD variations.
+
+
+<img width="791" height="644" alt="image" src="https://github.com/user-attachments/assets/bf157be9-71c7-4bfe-9750-4b1bbb7ec273" />
+
+This is the output for the piece of code.
+</details>
+
+<details>
+<summary><b>L2 - Advantages and disadvantages using low supply voltage</b></summary>
+
+<img width="940" height="487" alt="image" src="https://github.com/user-attachments/assets/f38814b3-7183-451a-9f2e-f70dce6f5d61" />
+
+
+After seeing the curves I can refer to the point that when Vdd is less, gain=Change in Vout/Change in Vin is more in inverters with low value of Vdd.
+
+The term 1/2 CV_DD^2represents the energy stored in a load capacitor when it is charged from 0 V to V_DD. During charging, the power supply delivers CV_DD^2energy, of which half is stored in the capacitor and half is dissipated as heat in the PMOS transistor. When the capacitor discharges through the NMOS, the stored energy is also dissipated as heat. This charging and discharging of capacitances is the primary source of dynamic power consumption in CMOS circuits. Therefore energy loss will be less for CMOS inverters with less Vdd.
+
+<img width="940" height="395" alt="image" src="https://github.com/user-attachments/assets/38b2045f-0ba3-4199-b2ba-5cf98739c50a" />
+
+**Disadvantages of low Vdd**
+
+<img width="940" height="513" alt="image" src="https://github.com/user-attachments/assets/fadf3799-2960-4f02-b0f2-2c359d6b9b2e" />
+
+Rise and fall delay is very high for cmos with low Vdd. Means it cant charge the capacitor fully upto the Vdss & it cant discharge the capacitor fully. It will be something like this. Then it will effect the speed of the circuit & noise margin also.
+
+<img width="940" height="522" alt="image" src="https://github.com/user-attachments/assets/efd7b26a-6387-4f01-bdbc-254549794f49" />
+
+</details>
+
+<details>
+<summary><b>L3 - Supply Variation Labs</b></summary>
+
+<img width="940" height="392" alt="image" src="https://github.com/user-attachments/assets/3df9909b-3259-4e1f-8cfc-76cf725307f4" />
+
+<img width="940" height="749" alt="image" src="https://github.com/user-attachments/assets/0c8e36ad-3123-4b15-89b4-aeee8498e9ea" />
+
+<img width="940" height="497" alt="image" src="https://github.com/user-attachments/assets/e04a6acc-9bab-43b5-8159-f63eb240b832" />
+
+<img width="940" height="765" alt="image" src="https://github.com/user-attachments/assets/e48dbf31-4db8-4326-938b-986a78a74858" />
+
+**For 1.8V transistor,
+Gain= (1.69303-0.102326)/(0.779775-0.980899) = 7.92Db**
+
+<img width="940" height="651" alt="image" src="https://github.com/user-attachments/assets/2b7adc56-3a0c-4e61-9262-163170afde57" />
+
+**For 1V transistor, Gain = (0.939535-0.534884)/(0.498876-0.576484)=-5.21Db**
+
+Why gain reduced? As discussed the supply voltage was not enough to drive pmos to charge the capacitor. 
+
+
+</details>
+
+---
+
+## Static behavior evaluation – CMOS inverter robustness – Device variation
+
+<details>
+<summary><b>L1 - Sources of variation – Etching process</b></summary>
+
+Now we need to understand how sources of variations effect the robustness of CMOS. Sources of variations means the factors such as length, width, oxide thickness etc (physical factors). We need to check whether device variations will effect cmos inverters or not?
+
+
+1.	Etching
+
+<img width="940" height="396" alt="image" src="https://github.com/user-attachments/assets/f2fe2e14-1bd8-4684-a9e5-dbb3c897f3c1" />
+
+This is the layout of a cmos inverter looks like. AS in the figure, we can see there will be p & n diffusion layers. Poly gate where the common input for both pmos & nmos are also present. These physical layers during fabrication are etched on the substrate. When the layers are not properly etched or has some process variations it can effect the performance of of the inverter. One among the factor is W & L. We know that L (channel length) defines the technology node itself. Width, which is the common area of the gate & diffusion also when not fabricated correctly, will effect the drain current.
+
+<img width="940" height="358" alt="image" src="https://github.com/user-attachments/assets/ed22cf26-889f-4ddc-af26-891f92463dc0" />
+
+</details>
+<details>
+<summary><b>L2 - Sources of variation - Oxide thickness</b></summary>
+
+2.	Oxide thickness
+
+<img width="940" height="495" alt="image" src="https://github.com/user-attachments/assets/c4375d45-0b19-46d0-8390-c5a016057260" />
+
+As you can see in the figure, when the cross sectional view of nmos is taken, the idea oxide is expected to be fabricated with a thickness of tox. But practical situation might contain some distortions as shown in the figure.
+
+<img width="940" height="424" alt="image" src="https://github.com/user-attachments/assets/f13c5aa8-94ec-4988-b536-f846237ae2a6" />
+
+Since drain current is also dependent on the thickness of the oxide, it can be effected.
+
+</details>
+
+<details>
+<summary><b>L3 - Smart SPICE simulation for device variations</b></summary>
+
+<img width="940" height="300" alt="image" src="https://github.com/user-attachments/assets/52792ae9-86d7-4c25-9a7b-61b02a076e8e" />
+
+Now inorder to check that, let us assume that, there are 2 possible situations with (strong pmos & weak nmos,) & (weak pmos & strong nmos). Let us assume that these are the maximum & minimum  possible widths & lenghths pf nmos & pmos. Now lets simulate & see how reactive the cmos transfer characteristics are with respect to the device variations.
+
+<img width="842" height="509" alt="image" src="https://github.com/user-attachments/assets/c9fec2d1-cfb4-4802-901c-8258e2fa8a43" />
+
+This is the spice deck.
+
+
+<img width="784" height="635" alt="image" src="https://github.com/user-attachments/assets/dd41c6c8-6fac-4b7b-9173-ccb8236912d2" />
+
+</details>
+
+<details>
+<summary><b>L4 - Conclusion</b></summary>
+
+<img width="940" height="576" alt="image" src="https://github.com/user-attachments/assets/4df8655f-3e43-4b97-9033-b2a7c96121bb" />
+
+After testing the switching threshold got sgifted little only. It didn’t effect the switching threshold of the same.
+
+<img width="940" height="462" alt="image" src="https://github.com/user-attachments/assets/51bf9788-3993-40ec-9b6b-2e15e6028252" />
+
+Noise margin is not variable enough. Its also good enough. Just 300Mv variation.
+
+<img width="466" height="170" alt="image" src="https://github.com/user-attachments/assets/73f3a23e-5129-4364-aedb-8cfcb62e6963" />
+
+</details>
+
+<details>
+<summary><b>L5 - Sky130 device variations labs</b></summary>
+
+<img width="940" height="500" alt="image" src="https://github.com/user-attachments/assets/33303c17-8db7-4811-9a7a-5c190d3160ab" />
+
+
+Here the pmos width is very high when compared to nmos.
+
+<img width="940" height="779" alt="image" src="https://github.com/user-attachments/assets/e882c072-626d-445d-bed2-6a63251726fc" />
+
+<img width="940" height="506" alt="image" src="https://github.com/user-attachments/assets/6fe3d1b8-6cf0-4cba-a2b9-089d81be8247" />
+
+As we can see the holding area of vdd (output been 1) which is decided by the pmos is larger(left side) when compared to the discharging area (output been zero). This is because the drive strength of pmos is very high when compared to nmos.
+
+<img width="807" height="964" alt="image" src="https://github.com/user-attachments/assets/e31c7633-aa3f-47ea-be9b-13a5da70d87e" />
+
+
+Switching threshold calculation: 0.9-0.989415
+Approximately 80Mv
