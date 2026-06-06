@@ -927,6 +927,11 @@ Eventhough the starting Id has a quadratic dependency on Vgs. But later it becam
 <img width="940" height="609" alt="image" src="https://github.com/user-attachments/assets/f3339678-d3e2-4a21-8ff9-45351c6854fa" />
 
 To get the threshold voltage, take the slope over the Vgs vs Id graph. It comes to apprx 0.77 Volts.
+</details>
+
+
+---
+
 
 ### NgspiceSky130_D2SK2 - CMOS voltage transfer characteristics (VTC)
 
@@ -967,8 +972,634 @@ When the PMOS is OFF, it can be modeled as an open switch because there is no co
 
   Therefore, the voltage drop appears across the NMOS resistor, and the output voltage is pulled close to 0 V. In an ideal MOSFET, the resistance is zero and the output is exactly 0 V. In a practical MOSFET, a small voltage may exist due to the finite ON resistance of the NMOS.
  </details>
-<details>
-<summary>L2 - Introduction to standard MOS voltage current parameters<b></b></summary>
+ 
+ <details>
+<summary><b>L2 - Introduction to standard MOS voltage current parameters</b></summary>
+
+<img width="940" height="514" alt="image" src="https://github.com/user-attachments/assets/617dcdaf-7731-4bda-9c6f-fcda1bb6343c" />
+
+When the PMOS is ON, it can be approximated as a resistor because it provides a conducting path between VDD and the output node.
+
+  If the NMOS is OFF, there is no path from the output node to ground. Therefore, current does not flow through the circuit and the output voltage is pulled close to VDD.
+
+  In reality, the PMOS is not an ideal resistor. Its resistance depends on the gate voltage, drain voltage, source voltage, and the drain current flowing through it.
+
+  Therefore, the PMOS behaves as a non-linear resistor rather than a constant resistor. As we study MOSFET current equations in more detail, we will see that the effective resistance of the PMOS changes with its operating conditions and is a non-linear function of the drain current.
+
+  <img width="940" height="509" alt="image" src="https://github.com/user-attachments/assets/eb131935-c669-4a29-a9f4-47da4ff00bfe" />
+
+  This figure explains the operation of a CMOS inverter using a simple switch-resistor model.
+
+### CMOS Inverter Structure
+
+The left figure shows a CMOS inverter consisting of:
+
+- PMOS connected between VDD and Vout.
+- NMOS connected between Vout and VSS (Ground).
+- Both gates connected together to form the input Vin.
+- A load capacitance CL connected at the output node.
+
+The load capacitance represents:
+- Gate capacitances of the next stage.
+- Interconnect capacitance.
+- Parasitic capacitances present at the output node.
+
+---
+
+### Case 1: Vin = VDD (Logic 1)
+
+In this condition:
+
+- PMOS is OFF because VSG = 0.
+- NMOS is ON because VGS > VT.
+
+The PMOS behaves like an open switch.
+
+The NMOS behaves like a resistor RN.
+
+A conducting path now exists:
+
+Vout → RN → VSS
+
+Therefore, the output node is connected to ground through the NMOS.
+
+The charge stored on CL is discharged through RN.
+
+As the capacitor discharges:
+
+- Output voltage decreases.
+- Current flows from CL to ground.
+- Eventually Vout approaches 0 V.
+
+Therefore:
+
+Vin = 1 → Vout = 0
+
+This is why the inverter produces the complement of the input.
+
+---
+
+### Case 2: Vin = 0 (Logic 0)
+
+In this condition:
+
+- PMOS is ON because VSG > |VT|.
+- NMOS is OFF because VGS = 0.
+
+The NMOS behaves like an open switch.
+
+The PMOS behaves like a resistor RP.
+
+A conducting path now exists:
+
+VDD → RP → Vout
+
+The output capacitor CL starts charging through RP.
+
+As the capacitor charges:
+
+- Output voltage increases.
+- Current flows from VDD into CL.
+- Eventually Vout approaches VDD.
+
+Therefore:
+
+Vin = 0 → Vout = VDD
+
+---
+
+### Why is CL Important?
+
+The capacitor CL cannot change its voltage instantaneously.
+
+Therefore:
+
+- During a LOW-to-HIGH transition, CL charges through RP.
+- During a HIGH-to-LOW transition, CL discharges through RN.
+
+This charging and discharging process creates the propagation delay of the inverter.
+
+The delay depends on:
+
+- RP
+- RN
+- CL
+
+Larger capacitance means:
+- Slower charging.
+- Slower discharging.
+- Larger delay.
+
+---
+
+### Important Observation
+
+The PMOS and NMOS are shown as resistors only for simplified analysis.
+
+In reality:
+
+- RP is not constant.
+- RN is not constant.
+- Both are non-linear functions of terminal voltages and drain current.
+
+However, this resistor model is very useful for understanding:
+
+- CMOS inverter operation.
+- Charging and discharging of load capacitance.
+- Propagation delay.
+- Dynamic power consumption.
 
 
+We shall provide the naming convention, something like this.
+
+<img width="940" height="471" alt="image" src="https://github.com/user-attachments/assets/eaa76a45-7c9f-49f7-ad7d-bcfbf27f15b4" />
+
+
+ </details>
+ 
+ <details>
+<summary><b>L3 - PMOS/NMOS drain current vs drain voltage</b></summary>
+
+Before constructing the Voltage Transfer Characteristics (VTC) of a CMOS inverter, it is important to understand the drain current characteristics of both NMOS and PMOS transistors individually. Since a CMOS inverter consists of both these devices connected together, understanding their individual behavior helps us understand how the inverter eventually reaches its output voltage.
+
+<img width="940" height="505" alt="image" src="https://github.com/user-attachments/assets/61d82011-1af5-42b2-b14b-501b63997d42" />
+
+The above figure shows the drain current versus drain voltage characteristics of an NMOS transistor. For a fixed gate voltage, when the drain voltage is initially small, the drain current increases almost linearly with drain voltage. This happens because the transistor behaves like a resistor and operates in the linear region.
+
+As the drain voltage continues to increase, the voltage difference between gate and drain starts reducing. Eventually, the condition:
+
+VDS = VGS − VT
+
+is reached. At this point, pinch-off begins near the drain end of the channel. Beyond this point, the transistor enters saturation and the drain current becomes almost independent of drain voltage.
+
+For higher values of gate voltage, a stronger inversion layer is formed inside the channel. Since more carriers are available for conduction, the drain current becomes larger. This is why multiple current curves corresponding to different gate voltages appear on the graph.
+
+An important observation is that all curves initially rise and then gradually flatten out after entering saturation.
+
+<img width="940" height="493" alt="image" src="https://github.com/user-attachments/assets/2fbb873c-517d-4c3c-8a98-dcb9a2ed2ced" />
+
+Here first the IdsN & VdsN curves are first plotted. For PMOS if it has to be plotted it should be in the third quadrant since Vth, Vds & Idsp will be negative.
+
+</details>
+ 
+ <details>
+<summary><b>L3 - Convert PMOS gate-source-voltage to Vin</b></summary>
+
+In a standard circuits, all the node voltages is of not of much use. So everything has to be converted in terms of Vin & Vout. With respect to the equations written, first we converted VgsP into Vin, then the curve shifts to Second quadrant. 
+<img width="940" height="465" alt="image" src="https://github.com/user-attachments/assets/d13f5ec3-658f-443d-891b-324d356b2650" />
+
+- Each value of VgsP is converted into the equivalent input voltage (Vin) using the relation:
+
+  Vin = VDD + VgsP. Since the PMOS source is connected to VDD,
+  VgsP = Vin - VDD. Therefore, every value of VgsP in the PMOS current table can be directly mapped to a corresponding Vin value.
+- While plotting the CMOS inverter characteristics, the horizontal axis is chosen as Vin instead of VgsP.
+- For example, if: VDD = 2 V and VgsP = 0 V then: Vin = 2 V.Therefore, the point corresponding to VgsP = 0 V is plotted at Vin = 2 V on the graph.
+- At the inverter output node, the PMOS drain current and NMOS drain current must be equal in magnitude and opposite in direction. Therefore:
+
+   IdsP = -IdsN. To avoid dealing with negative current values and to maintain a single current convention, the current axis is represented using IdsN. Using:
+
+   IdsP = -IdsN, all PMOS current values are converted into equivalent positive IdsN values.
+   As a result:
+
+   - The current axis is labeled as IdsN.
+   - Negative PMOS currents are reflected as positive values.
+   - Both PMOS and NMOS characteristics can be plotted on the same graph using a common current axis.
+
+   This makes it easier to determine the operating point and construct the CMOS inverter VTC.
+
+</details>
+ 
+ <details>
+<summary><b>L5 - Convert PMOS and NMOS drain-source-voltage to vout </b></summary>
+
+Now Vdsp+Vdd=Vout
+
+<img width="940" height="479" alt="image" src="https://github.com/user-attachments/assets/dd14e0b3-9319-4206-b1c9-1938c3d38c9b" />
+
+
+How to interpret this curve?
+- First we took pmos and converted the VdsP vs IdsP  (actually -VdsP vs -IdsP) into -VdsP vs Idn curve. In that we converted the VgsP value into Vin.
+- Now its time to convert Vdsp into Vout. Vout=Vdd+Vdsp. In graph point of view a scalar quantity which is positive is added to Vdsp to obtain Vout. So the graph will shift to the right as in the picture.
+
+
+<img width="930" height="774" alt="image" src="https://github.com/user-attachments/assets/2c2adccb-6eb8-4911-be69-d5f61844a98c" />
+
+- When Vout is 0 (red dots in the image), there is a current IdsN. This means that when the capacitor is completely discharged(Vout=0), this existing current IdsN will charge the capacitor when subjected to gate voltage. 
+- When Vout is at the maximum point(yellow dot in the image), since the capacitor is charged to the full voltage level there is no current flowing through the mosfet. So IdsP is zero
+
+</details>
+ 
+ <details>
+<summary><b>L6 - Merge PMOS – NMOS load curves and plot VTC </b></summary>
+
+<img width="913" height="985" alt="image" src="https://github.com/user-attachments/assets/223c9f11-fe13-4f10-9b23-6f8b74461613" />
+
+This is how nmos load curve is found. Now we have to superimpose the nmos & pmos curves & for that the next figure will help.
+
+<img width="940" height="1304" alt="image" src="https://github.com/user-attachments/assets/9aff4bd7-0592-40a2-8d72-f7c74ca3e6ee" />
+
+- The last graph in the figure is the combination of both pmos & nmos curves. Now we will take common points in both these graphs. For example, here there are 5 distinct voltages, 0v, 0.5v, 1v, 1.5v & 2V. We need to plot Vin verses Vout plot, that’s the transfer characteristics of a cmos inverter. For that we need to find out when Vin=0V whats the Vout.
+- For that take the common point between Vin=0V from both the graphs. Its marked as point A.
+
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/d47ec033-031b-4d24-92fa-625ed6fb7c27" />
+
+</details>
+
+---
+
+## 3️⃣ Switching Threshold & Dynamic Behaviour
+
+### Voltage transfer characteristics-SPICE simulations
+
+ 
+ <details>
+<summary><b>L1 - SPICE deck creation for CMOS inverter </b></summary>
+
+<img width="273" height="250" alt="image" src="https://github.com/user-attachments/assets/bbdd7d1e-1e82-4ab5-813e-70f6e69dff35" />
+
+We will now simulate the VTC. For that we need to create the SPICE deck. It is a connectivity information (Netlist). As there is information about substrate, the circuit is as shown below.Here M1 is PMOS and M2 is NMOS.
+
+<img width="362" height="258" alt="image" src="https://github.com/user-attachments/assets/9e890e26-6f43-44ab-8454-ab7d10a64ec4" />
+
+Name the nodes In model file we will mention like, 2.5V input lies between Vin and 0, similarly Vdd lies between vdd and 0.
+
+</details>
+ 
+ <details>
+<summary><b>L2 - SPICE simulation for CMOS inverter</b></summary>
+
+
+<img width="940" height="429" alt="image" src="https://github.com/user-attachments/assets/a0e1cf6f-c5ad-4f22-81da-875fffc1e198" />
+
+Here we are supposed to define the nodes. There are 4 nodes as shown in the figure. Vin, vdd, out & Vss. We want to plot dc characteristics that is Vin vs Vout curve. For that we ned to sweep dc voltage from 0 to 2.5 in a step of 0.05. Usually since the length of transistor is 250u, the input voltage is taken as 2.5V.
+The model files contains all the technological parameters regarding the nmos & pmos. Its given from foundry.
+Now we need to check the same for 2 different scenarios.
+
+<img width="940" height="125" alt="image" src="https://github.com/user-attachments/assets/ba5559b4-6f14-4dce-b343-6a9b11612cfc" />
+
+
+<img width="940" height="111" alt="image" src="https://github.com/user-attachments/assets/294ca920-1a32-4625-9a68-5905de88dd96" />
+
+In the second figure the Wp=0.9375u that is 2.5 times of Wn. Now we need to observe the results. The expected results as per the lecture is shown below. We shall simulate the same using spice & see. 
+
+<img width="940" height="758" alt="image" src="https://github.com/user-attachments/assets/55dcb8ec-4a2d-4c80-8f0b-4bc7eae75f74" />
+
+From this if we want to inspect something its like, when the graph is vertically divided into 2 halves through the center, the whole graph is shifted towards the left side. 
+
+<img width="940" height="757" alt="image" src="https://github.com/user-attachments/assets/18b5588e-177b-4892-a466-44522e6051ca" />
+
+In this case the graph passes through the center side. 
+
+</details>
+ 
+ <details>
+<summary><b>L3 - Labs Sky130 SPICE simulation for CMOS</b></summary>
+
+<img width="940" height="501" alt="image" src="https://github.com/user-attachments/assets/9a792d0d-6281-4e56-9f22-0529d4a0143a" />
+
+<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/55da2439-5af7-48fb-98c5-6be2aba3fda7" />
+
+For this spice deck, this is the transfer characteristics. To find the switching threshold, take the point, where Vin=Vout. That point will the converging point of a 45 degree line meeting the curve.
+
+<img width="924" height="423" alt="image" src="https://github.com/user-attachments/assets/ee92b963-0af7-4e09-bbe5-939bf4fd51d6" />
+
+Now inorder to find the transient characteristics, we are supposed to feed a pulse signal which will changw with respect to time as gate input.
+
+<img width="940" height="440" alt="image" src="https://github.com/user-attachments/assets/f04883d1-4b3e-4048-93ce-6a65cf9d9b63" />
+
+<img width="940" height="530" alt="image" src="https://github.com/user-attachments/assets/cac571c4-0c8d-4ac7-b55b-c01c624479c8" />
+
+
+To get the Rise Time delay: It’s the delay to which taken by the output give a logic 1, basically to rise to logic 1 when input is 0. Its calculates in such a way that, time difference between 50% of Input & 50% of the output & we got the delay as **2.48358-2.15037=0.33321ns**
+
+
+<img width="928" height="319" alt="image" src="https://github.com/user-attachments/assets/ae21fcb1-66ee-4d1d-ad01-5243e99e1039" />
+
+**Fall delay: 4.335-4.05=0.285ns**
+
+<img width="940" height="251" alt="image" src="https://github.com/user-attachments/assets/0a107137-b153-43ff-9c0f-4a17c860859f" />
+
+
+The switching threshold (VM) is the point where the PMOS and NMOS have equal current driving capability.
+
+At this point:
+
+- IdsP = IdsN
+- Pull-up current equals pull-down current.
+- Net current at the output node becomes zero.
+
+The output node is not just a wire. It contains load capacitance and stores charge.
+
+#### Why Does Current Balance Matter?
+
+**Case 1: PMOS Current > NMOS Current**
+
+- IPMOS = 80 µA
+- INMOS = 20 µA
+
+Net current:
+
+Net Current = 80 - 20 = 60 µA
+
+Extra charge enters the output node.
+
+Therefore:
+
+- Output capacitance charges.
+- Vout increases.
+
+
+**Case 2: PMOS Current < NMOS Current**
+
+- IPMOS = 20 µA
+- INMOS = 80 µA
+
+Net current:
+
+Net Current = 20 - 80 = -60 µA
+
+Charge leaves the output node.
+
+Therefore:
+
+- Output capacitance discharges.
+- Vout decreases.
+
+
+**Case 3: PMOS Current = NMOS Current**
+
+- IPMOS = 60 µA
+- INMOS = 60 µA
+
+Net current:
+
+Net Current = 60 - 60 = 0
+
+Therefore:
+
+- No extra charge enters the node.
+- No charge leaves the node.
+- Output capacitance neither charges nor discharges.
+- dVout/dt = 0
+
+The output voltage stops moving.
+
+This is the fundamental reason behind the switching threshold.
+
+#### Why Vin = Vout at Switching Threshold?
+
+As Vin increases:
+
+- Vin = 0 V → PMOS dominates → Vout ≈ VDD
+- Vin increases → NMOS becomes stronger → Vout starts decreasing
+- Eventually → PMOS current = NMOS current
+
+At this point:
+
+- Net current = 0
+- Output voltage is momentarily balanced
+
+For a symmetric inverter, this balance point occurs when:
+
+Vin = Vout
+
+This voltage is called the switching threshold (VM).
+
+The true definition of switching threshold is the point where PMOS current equals NMOS current. The condition Vin = Vout is a consequence of this current balance, not the definition itself.
+
+
+
+### DC Analysis
+
+DC analysis calculates steady-state voltages and currents by sweeping DC sources and ignoring time-dependent effects.
+
+Applications:
+
+- IV characteristics
+- Voltage Transfer Curve (VTC)
+- Switching threshold
+- Noise margin calculation
+
+Example:
+
+
+.dc Vin 0 1.8 0.1
+
+
+SPICE evaluates:
+
+
+- Vin = 0.0 V → Solve circuit
+- Vin = 0.1 V → Solve circuit
+- Vin = 0.2 V → Solve circuit
+- ...
+- Vin = 1.8 V → Solve circuit
+
+
+Each point is solved independently.
+
+There is no concept of time.
+
+
+
+### Transient Analysis
+
+Transient analysis calculates the time-domain response of a circuit.
+
+Applications:
+
+- Switching behavior
+- Propagation delay
+- Rise time
+- Fall time
+- Dynamic performance
+
+Example:
+
+
+- Vin in 0 PULSE(0 1.8 0 0.1ns 0.1ns 2ns 4ns)
+- .tran 1n 10n
+
+
+SPICE evaluates:
+
+
+- t = 0 ns     → Vin = 0 V
+- t = 0.1 ns   → Vin rising
+- t = 0.2 ns   → Vin ≈ 1.8 V
+- t = 2 ns     → Vin = 1.8 V
+- t = 2.1 ns   → Vin falling
+- t = 4 ns     → Cycle repeats
+
+
+Since Vin changes with time:
+
+- VGS changes with time.
+- MOSFET currents change with time.
+- Output capacitance charges and discharges.
+- Vout changes with time.
+
+
+
+### DC Analysis vs Transient Analysis
+
+| DC Analysis | Transient Analysis |
+|------------|------------|
+| No time dependence | Includes time dependence |
+| Solves independent operating points | Solves continuously with time |
+| Used for VTC and IV curves | Used for switching analysis |
+| Ignores charging/discharging effects | Includes charging/discharging effects |
+| Finds switching threshold | Finds delay and timing metrics |
+
+### Conclusion
+
+DC analysis evaluates a sequence of steady-state operating points and is mainly used for VTC generation and switching threshold extraction. Transient analysis tracks the actual time-domain behavior of the circuit and is used to study delays, rise/fall times, and dynamic switching performance.
+
+
+
+</details>
+
+---
+
+
+### Static behaviour evaluation-CMOS inverter robustness-Switching Threshold
+
+ 
+ <details>
+<summary><b>L1 - Switching Threshold, Vm</b></summary>
+
+<img width="940" height="458" alt="image" src="https://github.com/user-attachments/assets/19dd6126-b60a-4196-961b-1d37a814b125" />
+
+The shape of the graph is similar in both ways. This shows the robustness of the cmos inverter. That’s why it’s the most used circuit used to create logic gates. The other factors which define or depend on robustnesss of the device is.
+
+- Switching threshold
+Switching threshold values of both inverters with Wn=Wp=0.375U & Wn=0.375, Wp=0.9375u is given below. As seen in the second figure, this value is more. This area where pmos & nmos are in saturation means they both are on, there are chances for leakage current means current might flow from Power to ground.
+
+<img width="940" height="472" alt="image" src="https://github.com/user-attachments/assets/5425bca7-7581-42f5-87dd-a916db2e4da9" />
+
+<img width="940" height="472" alt="image" src="https://github.com/user-attachments/assets/af117d12-08fc-4292-98dd-40102b7cf771" />
+
+</details>
+
+ <details>
+<summary><b>L2 - Analytical expression of Vm as a function of (W/L)p and (W/L)n</b></summary>
+
+
+<img width="940" height="482" alt="image" src="https://github.com/user-attachments/assets/b42aa073-29a4-4ffc-b20e-123c2233d40c" />
+
+We are talking about the point where both transistors are in saturation mode. 
+
+<img width="940" height="502" alt="image" src="https://github.com/user-attachments/assets/2dd5ac1d-1cc0-4dd5-bd23-0c63edb549a7" />
+
+
+The things to keep in mind. The transistors are working in saturation mode. Vm is the point where Vin=Vout. Vgs of a nmos is Vin. Vgs of pmos in Vin-Vdd. The equation of Id is taken from the Lecture, L4:  Velocity saturation drain current model. After equating, IdsP & IdsN, the Vm equation is obtained. 
+
+<img width="940" height="491" alt="image" src="https://github.com/user-attachments/assets/cdcff76d-4ccd-4bb8-9153-1c31e751ffc2" />
+
+After taking the values from model files & width & length of transistors, Vm is obtained as 0.98V & 1.2V respectively.
+
+</details>
+
+ <details>
+<summary><b>L3 - Analytical expression of (W/L)p and (W/L)n as a function of Vm</b></summary>
+
+In the previous lecture, we took the value of (W/L) & found the value of Vm. Now we need to fix Vm & find out the value of (W/L).
+
+<img width="940" height="487" alt="image" src="https://github.com/user-attachments/assets/c240b4a3-f454-44db-9ee6-a4f202f40d9f" />
+
+Rearranging the things will be like,
+
+<img width="598" height="129" alt="image" src="https://github.com/user-attachments/assets/bf8a61c8-e278-456c-8d17-a7e723edd91b" />
+
+<img width="940" height="109" alt="image" src="https://github.com/user-attachments/assets/4d5fa603-d952-4f52-8037-8afe5077f6aa" />
+
+<img width="651" height="107" alt="image" src="https://github.com/user-attachments/assets/967193e2-efa8-4ef9-89dd-9bed502d012d" />
+
+<img width="657" height="106" alt="image" src="https://github.com/user-attachments/assets/bdba94cf-f2e7-44ff-b147-742da63d5536" />
+
+<img width="940" height="444" alt="image" src="https://github.com/user-attachments/assets/9e65f07f-0c3d-42fd-9d8a-66e51cc51fbb" />
+
+Now we will do some spice simulations, in such a way that we will keep Wn/Ln a constant & multiply with a constant which means, W/L ratio of pmos will be some interger times the W/L of nmos. Then w shall plot the switching thresholds & see. This will make us understand whether increasing the width of pmos will effect the switching threshold or not.
+
+
+</details>
+
+ <details>
+<summary><b>L4 -  Static and dynamic simulation of CMOS inverter</b></summary>
+
+Definition of pulse signal:
+
+Vin in 0 0 pulse 0 2.5 0 10p 0p 1n 2n
+
+### Understanding the PULSE Source
+
+
+Vin in 0 PULSE(0 2.5 0 10p 0p 1n 2n)
+
+
+This statement defines a pulse voltage source named **Vin**.
+
+General syntax:
+
+PULSE(Vinitial Von Tdelay Trise Tfall Ton Tperiod)
+
+
+| Parameter | Value | Description |
+|------------|---------|------------|
+| Vinitial | 0 V | Initial voltage level (Logic 0) |
+| Von | 2.5 V | Final voltage level (Logic 1) |
+| Tdelay | 0 s | Delay before the first transition starts |
+| Trise | 10 ps | Time taken to rise from 0 V to 2.5 V |
+| Tfall | 0 ps | Time taken to fall from 2.5 V to 0 V |
+| Ton | 1 ns | Duration for which the pulse remains HIGH |
+| Tperiod | 2 ns | Total period of one pulse cycle |
+
+<img width="940" height="433" alt="image" src="https://github.com/user-attachments/assets/ec1fbed3-4766-4fcc-bb1e-a6b282700c61" />
+
+<img width="650" height="392" alt="image" src="https://github.com/user-attachments/assets/19d5013c-1b51-4ca0-8f46-825c85fb9a07" />
+
+
+<img width="940" height="755" alt="image" src="https://github.com/user-attachments/assets/efa92679-3f00-44c6-90b8-57910421f844" />
+
+Rise delay = Time at which 50% of rise output – Time at which 50% of fall input 
+This mean how much extra time did the output take to rise. Actually when the input falls, then output should actually rise at the same time. But how much extra time did it take.
+
+<img width="940" height="709" alt="image" src="https://github.com/user-attachments/assets/83c1274b-c8e8-45c4-8ad4-af7acbbce7bd" />
+
+<img width="940" height="478" alt="image" src="https://github.com/user-attachments/assets/a16d0a01-9221-41f2-8069-aebf8cf06cb9" />
+
+Rise delay & fall delay were calculated. Now draw a 45 degree line to the Transfer characteristics. The point where it gets intersected with the graph is the Vm=0.99V.
+
+
+</details>
+
+ <details>
+<summary><b>L5 - Static and dynamic simulation of CMOS inverter with increased PMOS width</b></summary>
+
+Now draw the same for all the combinations inside the table. So now the width of the pmos will be 2 times the width of the nmos.
+
+<img width="717" height="494" alt="image" src="https://github.com/user-attachments/assets/db0cc953-2d71-4b2f-8a87-5bf7b0c2c2fe" />
+
+The same change is made in dc & transient analysis.
+
+<img width="940" height="763" alt="image" src="https://github.com/user-attachments/assets/7c9d832a-7abf-40da-952d-aaa034e330b4" />
+
+The dc characteristics has shifted towards the right side compared to the previous curve. This is because now your pmos has become more stronger when width is increased. So now the capacitor will get charged more because of more pmos current. So for switching threshold, inorder to make Ip=In, nmos has to be equally strong. So inorder to increase drain current through nmos the only way is to increase Vin. So Vin increases, so the curve shifts towards right.
+
+
+After transient analysis, we get the rise and fall delay as, 80ps & 76 ps.
+<img width="940" height="436" alt="image" src="https://github.com/user-attachments/assets/ab2b3e9d-62d3-42c1-81d8-281209757bfb" />
+
+Now Vm is calculated as 1.2V (Vin value when the intersection of Vin=Vout line with the  curve). It gets shifted towards right.
+
+<img width="940" height="447" alt="image" src="https://github.com/user-attachments/assets/ee32cb47-9186-4a02-b1df-9633a62639ba" />
+
+When W of pmos increases the Vm switches towards right. And moreover the rise delay(the time required to charge the capacitor) decreases. Because pmos becomes more stronger now. The switching threshold (Vm) is the input voltage at which the inverter changes state. It determines the noise margins, affects rise and fall delay symmetry, and indicates the balance between NMOS and PMOS drive strengths. Ideally, Vm is kept close to VDD/2 for robust and reliable digital operation.
+
+<img width="940" height="377" alt="image" src="https://github.com/user-attachments/assets/fbed67fe-7b7c-423c-9a4f-8d4b25ec3615" />
+
+</details>
+
+ <details>
+<summary><b>L6 - Applications of CMOS inverter in clock network and STA</b></summary>
 
