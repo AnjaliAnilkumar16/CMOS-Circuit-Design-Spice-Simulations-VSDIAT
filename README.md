@@ -22,7 +22,7 @@
 ![Waveform Analysis: LTspice, Python](https://img.shields.io/badge/Waveform%20Analysis-LTspice%2C%20Python-green?style=for-the-badge)<br>
 ![Documentation: Markdown & GitHub](https://img.shields.io/badge/Documentation-Markdown%20%26%20GitHub-yellow?style=for-the-badge)
 
-## 1️⃣ Mosfet Fundamental & Spice Setup
+## Day 1️⃣ Mosfet Fundamental & Spice Setup
 
 
 
@@ -681,7 +681,7 @@ The reason is SPICE's current sign convention. SPICE assumes that current enteri
 
 </details>
 
-## 2️⃣ Velocity Saturation & CMOS Inverter Basics
+## Day 2️⃣ Velocity Saturation & CMOS Inverter Basics
 
 ### NgspiceSky130-Day2-Velocity saturation and basics of CMOS inverter VTC
 
@@ -1207,7 +1207,7 @@ This is how nmos load curve is found. Now we have to superimpose the nmos & pmos
 
 ---
 
-## 3️⃣ Switching Threshold & Dynamic Behaviour
+## Day 3️⃣ Switching Threshold & Dynamic Behaviour
 
 ### Voltage transfer characteristics-SPICE simulations
 
@@ -1628,7 +1628,7 @@ The switching threshold (Vm) determines the input voltage at which a CMOS invert
 </details>
 
 
-## 4️⃣ Noise Margin & Robustness Analysis
+## Day 4️⃣ Noise Margin & Robustness Analysis
 
 
 
