@@ -936,7 +936,7 @@ To get the threshold voltage, take the slope over the Vgs vs Id graph. It comes 
 ---
 
 
-### NgspiceSky130_D2SK2 - CMOS voltage transfer characteristics (VTC)
+### CMOS voltage transfer characteristics (VTC)
 
 <details>
 <summary><b>L2 - MOSFET as a switch</b></summary>
