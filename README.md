@@ -29,7 +29,7 @@
 
 
 
-### NgspiceSky130_D1SK1 - Introduction to Circuit Design and SPICE Simulations
+###  Introduction to Circuit Design and SPICE Simulations
 
 <details>
 <summary><b>L1 - Why do we need SPICE Simulations?</b></summary>
@@ -100,7 +100,7 @@ The threshold voltage is no longer constant and becomes a function of VSB. The b
 
 ---
 
-### NgspiceSky130_D1SK2 - NMOS Resistive and Saturation Region
+### NMOS Resistive and Saturation Region
 
 <details>
 <summary><b>L1 - Resistive region of operation with small drain-source voltage</b></summary>
@@ -492,7 +492,7 @@ Once pinch-off occurs, the MOSFET enters the saturation region. The channel volt
 
 ---
 
-### NgspiceSky130_D1SK3 - Introduction to SPICE
+### Introduction to SPICE
 
 <details>
 <summary><b>L1 - Basic SPICE Setup</b></summary>
@@ -686,7 +686,7 @@ The reason is SPICE's current sign convention. SPICE assumes that current enteri
 
 ## Day 2️⃣ Velocity Saturation & CMOS Inverter Basics
 
-### NgspiceSky130-Day2-Velocity saturation and basics of CMOS inverter VTC
+###  Velocity saturation and basics of CMOS inverter VTC
 
 <details>
 <summary><b>L1 - L1 SPICE simulation for lower nodes?</b></summary>
